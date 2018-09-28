@@ -1,21 +1,20 @@
 import { issue, data, burn, reissue } from 'waves-transactions'
 import axios from 'axios'
-import { Tx, } from 'waves-transactions/transactions'
+import { Tx } from 'waves-transactions/transactions'
 
+export type ItemParams = ItemParamsV1
 
-type ItemParams = ItemParamsV1
-
-interface ItemParamsV1 {
+export interface ItemParamsV1 {
   version: ParamsVer.One,
   main: { img: string, name: string },
   misc: any
 }
 
-interface ItemDistribution {
+export interface ItemDistribution {
   [address: string]: number
 }
 
-interface BlockchainItem<T> {
+export interface BlockchainItem<T> {
   id: string,
   img: string,
   name: string,
@@ -31,13 +30,13 @@ interface BlockchainItem<T> {
 
 const isArray = <T>(arg: T | T[] | Array<T> | ArrayLike<T>): arg is T[] => (<T[]>arg).length != undefined ? true : false
 
-type Either<TResult = any, TError = any> = Result<TResult> | Error<TError>
+export type Either<TResult = any, TError = any> = Result<TResult> | Error<TError>
 
-interface Result<TResult = any> {
+export interface Result<TResult = any> {
   success: boolean, result: TResult
 }
 
-interface Error<TError = any> {
+export interface Error<TError = any> {
   success: boolean,
   error: TError
 }
@@ -71,7 +70,13 @@ export interface Err {
   txExecutionDetails: Either[]
 }
 
-export function WavesItems(chainId: 'W' | 'T') {
+export interface IWavesItems {
+  create: (seed: string, amount: number, isLimited: boolean, params: ItemParams) => Promise<Either<BlockchainItem<any>, Err>>
+  getItemInfo: (id: string, includeDistribution: boolean) => Promise<Either<BlockchainItem<any>, Err>>
+  changeSuply: (seed: string, id: string, amountChange: number) => Promise<Either<SuplyInfo, Err>>
+}
+
+export function WavesItems(chainId: 'W' | 'T'): IWavesItems {
 
   const baseUri = chainId == 'T' ? 'https://testnodes.wavesnodes.com' : 'https://nodes.wavesnodes.com'
 

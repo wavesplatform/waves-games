@@ -1,6 +1,6 @@
 {
   "name": "@waves/waves-games",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Create and deliver game assets through Waves Platform",
   "keywords": [
     "waves",
@@ -19,6 +19,8 @@
     "url": "https://github.com/wavesplatform/waves-games.git"
   },
   "dependencies": {
-    "waves-crypto": "^1.0.24"
+    "axios": "^0.18.0",
+    "ncp": "^2.0.0",
+    "waves-transactions": "^1.0.21"
   }
 }
