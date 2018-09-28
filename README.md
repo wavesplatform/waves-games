@@ -1,5 +1,7 @@
 # @waves/waves-games  [![npm version](https://badge.fury.io/js/@waves%2Fwaves-games.svg)](https://www.npmjs.com/package/@waves/waves-games)
 
+Create and deliver game assets through Waves Platform
+
 ### Usage
 
 ```js
