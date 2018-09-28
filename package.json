@@ -1,0 +1,36 @@
+{
+  "name": "@waves/waves-games",
+  "version": "1.0.1",
+  "description": "Create and deliver game assets through Waves Platform",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "ts-node build/build.ts",
+    "deploy": "cd dist; npm version patch; npm publish;"
+  },
+  "author": "Yuriy Naydenov",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^10.9.4",
+    "copy-webpack-plugin": "^4.5.2",
+    "jsdoc-to-markdown": "^4.0.1",
+    "nativescript-typedoc-theme": "0.0.7",
+    "preprocess": "^3.1.0",
+    "ts-jsdoc": "^3.0.1",
+    "ts-loader": "^5.1.0",
+    "typedoc-clarity-theme": "^1.1.0",
+    "typescript": "^3.0.3",
+    "webpack": "^4.17.2",
+    "webpack-cli": "^3.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wavesplatform/waves-games.git"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "ncp": "^2.0.0",
+    "waves-crypto": "^1.0.26",
+    "waves-transactions": "^1.0.21"
+  }
+}

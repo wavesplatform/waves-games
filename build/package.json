@@ -1,0 +1,24 @@
+{
+  "name": "@waves/waves-games",
+  "version": "1.0.0",
+  "description": "Create and deliver game assets through Waves Platform",
+  "keywords": [
+    "waves",
+    "crypto",
+    "games"
+  ],
+  "main": "index.js",
+  "types": "index.d.ts",
+  "license": "MIT",
+  "author": {
+    "name": "Yuriy Naydenov",
+    "email": "ebceu44@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wavesplatform/waves-games.git"
+  },
+  "dependencies": {
+    "waves-crypto": "^1.0.24"
+  }
+}
