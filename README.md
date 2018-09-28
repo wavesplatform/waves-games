@@ -1,4 +1,4 @@
-# @waves/waves-games  [![npm version](https://badge.fury.io/js/@waves/waves-games.svg)](https://www.npmjs.com/package/@waves/waves-games)
+# @waves/waves-games  [![npm version](https://badge.fury.io/js/@waves%2Fwaves-games.svg)](https://www.npmjs.com/package/@waves/waves-games)
 
 ### Usage
 
