@@ -74,13 +74,15 @@
 
 <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">howToCreateAnItem</span>(<span class="hljs-params">seed</span>) </span>{
 
+  <span class="hljs-built_in">console</span>.log(address(seed, <span class="hljs-string">'T'</span>))
+
   <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> items.create(seed, <span class="hljs-number">100</span>, <span class="hljs-literal">false</span>, {
     <span class="hljs-attr">version</span>: ParamsVer.One,
     <span class="hljs-attr">main</span>: {
       <span class="hljs-attr">name</span>: <span class="hljs-string">'The great slayer of pain'</span>,
       <span class="hljs-attr">img</span>: <span class="hljs-string">'https://cdn5.vectorstock.com/i/thumb-large/26/39/magic-sword-isolated-game-element-vector-20492639.jpg'</span>,
     },
-    <span class="hljs-comment">//user payload to use later in game (arbitrary data)</span>
+    <span class="hljs-comment">//user payload to use in game (arbitrary data)</span>
     misc: {
       <span class="hljs-attr">power</span>: <span class="hljs-number">10</span>,
       <span class="hljs-attr">attack</span>: <span class="hljs-number">12</span>
@@ -91,6 +93,9 @@
     <span class="hljs-comment">//item created </span>
     <span class="hljs-keyword">const</span> itemId = response.result.id
     <span class="hljs-built_in">console</span>.log(response.result)
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-comment">//error</span>
+    <span class="hljs-built_in">console</span>.log(response.error)
   }
 
 }
@@ -112,6 +117,37 @@
   }
 
 }
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">howToGetItemListByGameAddress</span>(<span class="hljs-params">gameAddress</span>) </span>{
+
+  <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> items.getItemList(gameAddress)
+  <span class="hljs-keyword">if</span> (isResult(response)) {
+    <span class="hljs-built_in">console</span>.log(response.result)
+  }
+
+}
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">howToSellAnItemForWaves</span>(<span class="hljs-params">seed, itemId, priceInWaves, amount</span>) </span>{
+
+  <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> items.sellItem(seed, itemId, items.waves(priceInWaves), amount)
+  <span class="hljs-keyword">if</span> (isResult(response)) {
+    <span class="hljs-built_in">console</span>.log(response.result)
+  }
+
+}
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">howToGetAListOfItemsForSale</span>(<span class="hljs-params">itemId</span>) </span>{
+  <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> items.itemsForSale(itemId, <span class="hljs-string">'WAVES'</span>)
+  <span class="hljs-keyword">if</span> (isResult(response)) {
+    <span class="hljs-built_in">console</span>.log(response.result)
+    <span class="hljs-comment">/* response example
+    [
+      { amount: 1, price: 1.2 }
+    ]
+    */</span>
+  }
+}
+
 </code></pre>
 			</div>
 		</div>
@@ -127,6 +163,9 @@
 				<ul class="before-current">
 					<li class=" tsd-kind-enum">
 						<a href="enums/paramsver.html" class="tsd-kind-icon">Params<wbr>Ver</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/assetinfo.html" class="tsd-kind-icon">Asset<wbr>Info</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="interfaces/blockchainitem.html" class="tsd-kind-icon">Blockchain<wbr>Item</a>
@@ -152,11 +191,20 @@
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/suplyinfo.html" class="tsd-kind-icon">Suply<wbr>Info</a>
 					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#currency" class="tsd-kind-icon">Currency</a>
+					</li>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 						<a href="globals.html#either" class="tsd-kind-icon">Either</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="globals.html#itemparams" class="tsd-kind-icon">Item<wbr>Params</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#itemsforsale" class="tsd-kind-icon">Items<wbr>For<wbr>Sale</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#price" class="tsd-kind-icon">Price</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#wavesitems" class="tsd-kind-icon">Waves<wbr>Items</a>

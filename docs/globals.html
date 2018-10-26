@@ -74,6 +74,7 @@
 						<section class="tsd-index-section ">
 							<h3>Interfaces</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-interface"><a href="interfaces/assetinfo.html" class="tsd-kind-icon">Asset<wbr>Info</a></li>
 								<li class="tsd-kind-interface tsd-has-type-parameter"><a href="interfaces/blockchainitem.html" class="tsd-kind-icon">Blockchain<wbr>Item</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/err.html" class="tsd-kind-icon">Err</a></li>
 								<li class="tsd-kind-interface tsd-has-type-parameter"><a href="interfaces/error.html" class="tsd-kind-icon">Error</a></li>
@@ -87,8 +88,11 @@
 						<section class="tsd-index-section ">
 							<h3>Type aliases</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-type-alias"><a href="globals.html#currency" class="tsd-kind-icon">Currency</a></li>
 								<li class="tsd-kind-type-alias tsd-has-type-parameter"><a href="globals.html#either" class="tsd-kind-icon">Either</a></li>
 								<li class="tsd-kind-type-alias"><a href="globals.html#itemparams" class="tsd-kind-icon">Item<wbr>Params</a></li>
+								<li class="tsd-kind-type-alias"><a href="globals.html#itemsforsale" class="tsd-kind-icon">Items<wbr>For<wbr>Sale</a></li>
+								<li class="tsd-kind-type-alias"><a href="globals.html#price" class="tsd-kind-icon">Price</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -103,13 +107,23 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Type aliases</h2>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias">
+					<a name="currency" class="tsd-anchor"></a>
+					<h3>Currency</h3>
+					<div class="tsd-signature tsd-kind-icon">Currency<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"WAVES"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"BTC"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"ETH"</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in index.ts:6</li>
+						</ul>
+					</aside>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-has-type-parameter">
 					<a name="either" class="tsd-anchor"></a>
 					<h3>Either</h3>
 					<div class="tsd-signature tsd-kind-icon">Either<span class="tsd-signature-symbol">:</span> <a href="interfaces/result.html" class="tsd-signature-type">Result</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TResult</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><a href="interfaces/error.html" class="tsd-signature-type">Error</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TError</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in index.ts:33</li>
+							<li>Defined in index.ts:52</li>
 						</ul>
 					</aside>
 				</section>
@@ -119,9 +133,34 @@
 					<div class="tsd-signature tsd-kind-icon">Item<wbr>Params<span class="tsd-signature-symbol">:</span> <a href="interfaces/itemparamsv1.html" class="tsd-signature-type">ItemParamsV1</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in index.ts:5</li>
+							<li>Defined in index.ts:11</li>
 						</ul>
 					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias">
+					<a name="itemsforsale" class="tsd-anchor"></a>
+					<h3>Items<wbr>For<wbr>Sale</h3>
+					<div class="tsd-signature tsd-kind-icon">Items<wbr>For<wbr>Sale<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in index.ts:100</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias">
+					<a name="price" class="tsd-anchor"></a>
+					<h3>Price</h3>
+					<div class="tsd-signature tsd-kind-icon">Price<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in index.ts:8</li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+						</ul>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -136,7 +175,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in index.ts:79</li>
+									<li>Defined in index.ts:122</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -159,7 +198,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in index.ts:63</li>
+									<li>Defined in index.ts:94</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -196,6 +235,9 @@
 					<li class=" tsd-kind-enum">
 						<a href="enums/paramsver.html" class="tsd-kind-icon">Params<wbr>Ver</a>
 					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/assetinfo.html" class="tsd-kind-icon">Asset<wbr>Info</a>
+					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="interfaces/blockchainitem.html" class="tsd-kind-icon">Blockchain<wbr>Item</a>
 					</li>
@@ -220,11 +262,20 @@
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/suplyinfo.html" class="tsd-kind-icon">Suply<wbr>Info</a>
 					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#currency" class="tsd-kind-icon">Currency</a>
+					</li>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 						<a href="globals.html#either" class="tsd-kind-icon">Either</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="globals.html#itemparams" class="tsd-kind-icon">Item<wbr>Params</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#itemsforsale" class="tsd-kind-icon">Items<wbr>For<wbr>Sale</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#price" class="tsd-kind-icon">Price</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#wavesitems" class="tsd-kind-icon">Waves<wbr>Items</a>

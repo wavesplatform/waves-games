@@ -31,6 +31,6 @@
     "axios": "^0.18.0",
     "ncp": "^2.0.0",
     "waves-crypto": "^1.0.26",
-    "waves-transactions": "^1.0.21"
+    "waves-transactions": "^1.0.31"
   }
 }
