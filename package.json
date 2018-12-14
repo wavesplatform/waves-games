@@ -1,23 +1,29 @@
 {
   "name": "@waves/waves-games",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Create and deliver game assets through Waves Platform",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "ts-node build/build.ts",
-    "deploy": "cd dist; npm version patch; npm publish;"
+    "deploy": "cd dist; npm version patch; npm publish;",
+    "test": "jest"
   },
   "author": "Yuriy Naydenov",
   "license": "MIT",
   "devDependencies": {
+    "@types/jest": "^23.3.10",
     "@types/node": "^10.9.4",
     "copy-webpack-plugin": "^4.5.2",
+    "jest": "^23.6.0",
     "jsdoc-to-markdown": "^4.0.1",
     "nativescript-typedoc-theme": "0.0.7",
     "preprocess": "^3.1.0",
+    "ts-jest": "^23.10.5",
     "ts-jsdoc": "^3.0.1",
     "ts-loader": "^5.1.0",
+    "ts-node": "^7.0.1",
+    "typedoc": "^0.13.0",
     "typedoc-clarity-theme": "^1.1.0",
     "typescript": "^3.0.3",
     "webpack": "^4.17.2",
@@ -28,9 +34,21 @@
     "url": "https://github.com/wavesplatform/waves-games.git"
   },
   "dependencies": {
+    "@waves/waves-transactions": "^3.0.1",
     "axios": "^0.18.0",
     "ncp": "^2.0.0",
-    "waves-crypto": "^1.0.26",
-    "waves-transactions": "^1.0.31"
+    "waves-crypto": "^1.0.39"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".spec.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    }
   }
 }
