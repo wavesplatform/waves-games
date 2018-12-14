@@ -10,17 +10,19 @@
     "outDir": "dist",
     "alwaysStrict": false,
     "strictNullChecks": false,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "baseUrl": "./src"
   },
   "jsdoc": "dist/jsdoc",
   "include": [
-    "./src/**/*"
+    "src/**/*"
     //"./declarations/**/*"
   ],
   "exclude": [
     "node_modules",
     "dist",
-    "usage"
+    "usage",
+    "**/*.spec.ts"
   ],
   "typedocOptions": {
     "mode": "file",
