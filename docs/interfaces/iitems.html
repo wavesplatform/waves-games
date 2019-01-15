@@ -105,7 +105,7 @@
 					<div class="tsd-signature tsd-kind-icon">buy<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in items.ts:29</li>
+							<li>Defined in items.ts:92</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -145,7 +145,7 @@
 					<div class="tsd-signature tsd-kind-icon">cancel<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in items.ts:30</li>
+							<li>Defined in items.ts:93</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -182,7 +182,7 @@
 					<div class="tsd-signature tsd-kind-icon">change<wbr>Amount<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in items.ts:27</li>
+							<li>Defined in items.ts:90</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -222,9 +222,22 @@
 					<div class="tsd-signature tsd-kind-icon">create<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in items.ts:26</li>
+							<li>Defined in items.ts:89</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Creates an item.</p>
+						</div>
+						<h3 id="usage">Usage</h3>
+						<pre><code class="language-js"><span class="hljs-keyword">const</span> { Items } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@waves/waves-games'</span>)
+<span class="hljs-keyword">const</span> { create } = Items(ChainId.Testnet)
+
+<span class="hljs-keyword">const</span> items = Items(ChainId.Testnet)
+<span class="hljs-keyword">const</span> request = create(<span class="hljs-number">100</span>, <span class="hljs-literal">true</span>, { <span class="hljs-attr">version</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">main</span>: { <span class="hljs-attr">name</span>: <span class="hljs-string">'The sword of pain'</span>, <span class="hljs-attr">img</span>: <span class="hljs-string">'img_url'</span> }, <span class="hljs-attr">misc</span>: {} }, <span class="hljs-string">'creatorSeed'</span>)
+<span class="hljs-keyword">const</span> item = <span class="hljs-keyword">await</span> request.execute()
+</code></pre>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -262,9 +275,22 @@
 					<div class="tsd-signature tsd-kind-icon">get<wbr>Item<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in items.ts:23</li>
+							<li>Defined in items.ts:38</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Returns an item info from the blockchain.</p>
+						</div>
+						<h3 id="usage">Usage</h3>
+						<pre><code class="language-js"><span class="hljs-keyword">const</span> { Items } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@waves/waves-games'</span>)
+<span class="hljs-keyword">const</span> { getItem } = Items(ChainId.Testnet)
+
+getItem(itemId).then(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> {
+   <span class="hljs-built_in">console</span>.log(item)
+})
+</code></pre>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -296,9 +322,22 @@
 					<div class="tsd-signature tsd-kind-icon">get<wbr>Item<wbr>List<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in items.ts:24</li>
+							<li>Defined in items.ts:55</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Returns an item list issued by particular game creator.</p>
+						</div>
+						<h3 id="usage">Usage</h3>
+						<pre><code class="language-js"><span class="hljs-keyword">const</span> { Items } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@waves/waves-games'</span>)
+<span class="hljs-keyword">const</span> { getItemList } = Items(ChainId.Testnet)
+
+getItemList(<span class="hljs-string">'creatorAddress'</span>).then(<span class="hljs-function"><span class="hljs-params">items</span> =&gt;</span> {
+   <span class="hljs-built_in">console</span>.log(items)
+})
+</code></pre>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -327,7 +366,7 @@
 					<div class="tsd-signature tsd-kind-icon">sell<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in items.ts:28</li>
+							<li>Defined in items.ts:91</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -374,9 +413,23 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in items.ts:25</li>
+									<li>Defined in items.ts:72</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns an item available on market.</p>
+								</div>
+								<h3 id="usage">Usage</h3>
+								<pre><code class="language-js"><span class="hljs-keyword">const</span> { Items } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@waves/waves-games'</span>)
+<span class="hljs-keyword">const</span> { getItemSuply } = Items(ChainId.Testnet)
+
+<span class="hljs-comment">//getting all orders for sale for BTC</span>
+getItemSuply(<span class="hljs-string">'itemId'</span>, <span class="hljs-string">'BTC'</span>).then(<span class="hljs-function"><span class="hljs-params">items</span> =&gt;</span> {
+   <span class="hljs-built_in">console</span>.log(items)
+})
+</code></pre>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>

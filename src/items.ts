@@ -20,9 +20,72 @@ export interface Item<T = any> {
 }
 
 export interface IItems {
+  /**
+   * Returns an item info from the blockchain.
+   *
+   * ### Usage
+   * ```js
+   * const { Items } = require('@waves/waves-games')
+   * const { getItem } = Items(ChainId.Testnet)
+   *
+   * getItem(itemId).then(item => {
+   *    console.log(item)
+   * })
+   *
+   * ```
+   *
+   */
   getItem: (id: string, includeDistribution: boolean) => Promise<Item>
+
+  /**
+   * Returns an item list issued by particular game creator.
+   *
+   * ### Usage
+   * ```js
+   * const { Items } = require('@waves/waves-games')
+   * const { getItemList } = Items(ChainId.Testnet)
+   *
+   * getItemList('creatorAddress').then(items => {
+   *    console.log(items)
+   * })
+   *
+   * ```
+   *
+   */
   getItemList: (creatorAddress: string) => Promise<Item[]>
+  /**
+   * Returns an item available on market.
+   *
+   * ### Usage
+   * ```js
+   * const { Items } = require('@waves/waves-games')
+   * const { getItemSuply } = Items(ChainId.Testnet)
+   *
+   * //getting all orders for sale for BTC
+   * getItemSuply('itemId', 'BTC').then(items => {
+   *    console.log(items)
+   * })
+   *
+   * ```
+   *
+   */
   getItemSuply(itemId: string, currency: Currency): Promise<Record<number, number>>
+
+  /**
+   * Creates an item.
+   *
+   * ### Usage
+   * ```js
+   * const { Items } = require('@waves/waves-games')
+   * const { create } = Items(ChainId.Testnet)
+   *
+   * const items = Items(ChainId.Testnet)
+   * const request = create(100, true, { version: 1, main: { name: 'The sword of pain', img: 'img_url' }, misc: {} }, 'creatorSeed')
+   * const item = await request.execute()
+   *
+   * ```
+   *
+   */
   create: (amount: number, isLimited: boolean, params: ItemParams, seed: TSeedTypes) => Intent<Item>
   changeAmount: (itemId: string, by: number, freeze: boolean, seed: string) => Intent<boolean>
   sell: (itemId: string, price: Price, amount: number, seed: string) => Intent<IOrder>
@@ -64,7 +127,7 @@ export function Items(chainId: ChainId): IItems {
         const itemParams = JSON.parse(itemDetails.value)
         return _buildItem(assetInfo, itemParams)
       }))
-    
+
       return itemList
     } catch (err) {
       throw err
@@ -75,7 +138,7 @@ export function Items(chainId: ChainId): IItems {
     try {
       // const orderbook = await getOrderbookPair(itemId, currencies[currency], matcherUri)
       const orderbook = {
-        asks: [ { amount: 2, price: 123300000000 } ]
+        asks: [{ amount: 2, price: 123300000000 }]
       } as OrderbookPair
       const suply = []
 
@@ -174,7 +237,7 @@ export function Items(chainId: ChainId): IItems {
     return {
       entries,
       execute: () => new Promise<IOrder>(async (resolve, reject) => {
-        try {          
+        try {
           const order = await createOrder(entries[0], matcherUri)
           resolve(order)
         } catch (err) {
@@ -199,7 +262,7 @@ export function Items(chainId: ChainId): IItems {
     return {
       entries,
       execute: () => new Promise<IOrder>(async (resolve, reject) => {
-        try {          
+        try {
           const order = await createOrder(entries[0], matcherUri)
           resolve(order)
         } catch (err) {
@@ -219,13 +282,29 @@ export function Items(chainId: ChainId): IItems {
     return {
       entries,
       execute: () => new Promise<boolean>(async (resolve, reject) => {
-        try {          
+        try {
           resolve(true)
         } catch (err) {
           reject(err)
         }
       })
     }
+  }
+
+  function _buildItem(data: AssetInfo | any, itemParams: ItemParams): Item {
+    const { name, img } = itemParams.main
+
+    return {
+      id: data.assetId || data.id,
+      gameId: data.issuer || address({ public: data.senderPublicKey } as PublicKey, chainId),
+      name,
+      img,
+      amount: data.quantity,
+      isLimited: !data.reissuable,
+      misc: itemParams.misc,
+      rawParams: itemParams,
+      timestamp: data.issueTimestamp || data.timestamp
+    } as Item
   }
 
   const waves = (value: number): Price => ({ value: value * Math.pow(10, 8), assetId: null })
@@ -244,18 +323,3 @@ export function Items(chainId: ChainId): IItems {
   }
 }
 
-function _buildItem(data: AssetInfo | any, itemParams: ItemParams): Item {
-  const { name, img } = itemParams.main
-
-  return {
-    id: data.assetId || data.id,
-    gameId: data.issuer || address({ public: data.senderPublicKey } as PublicKey, data.chainId),
-    name,
-    img,
-    amount: data.quantity,
-    isLimited: !data.reissuable,
-    misc: itemParams.misc,
-    rawParams: itemParams,
-    timestamp: data.issueTimestamp || data.timestamp
-  } as Item
-}

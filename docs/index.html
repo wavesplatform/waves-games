@@ -75,90 +75,16 @@
 					<li>List items for sale by players or developers</li>
 				</ul>
 				<h3 id="usage">Usage</h3>
-				<pre><code class="language-js"><span class="hljs-keyword">import</span> { WavesItems, ParamsVer, isResult } <span class="hljs-keyword">from</span> <span class="hljs-string">"@waves/waves-games"</span>
+				<pre><code class="language-js"><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">howToCreateAnItem</span>(<span class="hljs-params">creatorSeed</span>) </span>{
 
-<span class="hljs-comment">//'T' for testnet</span>
-<span class="hljs-comment">//'W' for mainnet</span>
+    <span class="hljs-keyword">const</span> { Items } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@waves/waves-games'</span>)
+    <span class="hljs-keyword">const</span> { create } = Items(ChainId.Testnet)
 
-<span class="hljs-keyword">const</span> items = WavesItems(<span class="hljs-string">'T'</span>)
+    <span class="hljs-keyword">const</span> items = Items(ChainId.Testnet)
+    <span class="hljs-keyword">const</span> request = create(<span class="hljs-number">100</span>, <span class="hljs-literal">true</span>, { <span class="hljs-attr">version</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">main</span>: { <span class="hljs-attr">name</span>: <span class="hljs-string">'The sword of pain'</span>, <span class="hljs-attr">img</span>: <span class="hljs-string">'img_url'</span> }, <span class="hljs-attr">misc</span>: {} creatorSeed)
+    <span class="hljs-keyword">const</span> item = <span class="hljs-keyword">await</span> request.execute()
 
-<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">howToCreateAnItem</span>(<span class="hljs-params">seed</span>) </span>{
-
-  <span class="hljs-built_in">console</span>.log(address(seed, <span class="hljs-string">'T'</span>))
-
-  <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> items.create(seed, <span class="hljs-number">100</span>, <span class="hljs-literal">false</span>, {
-    <span class="hljs-attr">version</span>: ParamsVer.One,
-    <span class="hljs-attr">main</span>: {
-      <span class="hljs-attr">name</span>: <span class="hljs-string">'The great slayer of pain'</span>,
-      <span class="hljs-attr">img</span>: <span class="hljs-string">'https://cdn5.vectorstock.com/i/thumb-large/26/39/magic-sword-isolated-game-element-vector-20492639.jpg'</span>,
-    },
-    <span class="hljs-comment">//user payload to use in game (arbitrary data)</span>
-    misc: {
-      <span class="hljs-attr">power</span>: <span class="hljs-number">10</span>,
-      <span class="hljs-attr">attack</span>: <span class="hljs-number">12</span>
-    }
-  })
-
-  <span class="hljs-keyword">if</span> (isResult(response)) {
-    <span class="hljs-comment">//item created </span>
-    <span class="hljs-keyword">const</span> itemId = response.result.id
-    <span class="hljs-built_in">console</span>.log(response.result)
-  } <span class="hljs-keyword">else</span> {
-    <span class="hljs-comment">//error</span>
-    <span class="hljs-built_in">console</span>.log(response.error)
-  }
-
-}
-
-<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">howToChangeItemSuplyIfItemIsNotLimited</span>(<span class="hljs-params">seed, itemId</span>) </span>{
-
-  <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> items.changeSuply(seed, itemId, +<span class="hljs-number">100</span>)
-  <span class="hljs-keyword">if</span> (isResult(response)) {
-    <span class="hljs-built_in">console</span>.log(response.result)
-  }
-
-}
-
-<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">howToGetPreviouslyCteatedItemInfo</span>(<span class="hljs-params">itemId</span>) </span>{
-
-  <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> items.getItemInfo(itemId, <span class="hljs-literal">true</span>)
-  <span class="hljs-keyword">if</span> (isResult(response)) {
-    <span class="hljs-built_in">console</span>.log(response.result)
-  }
-
-}
-
-<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">howToGetItemListByGameAddress</span>(<span class="hljs-params">gameAddress</span>) </span>{
-
-  <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> items.getItemList(gameAddress)
-  <span class="hljs-keyword">if</span> (isResult(response)) {
-    <span class="hljs-built_in">console</span>.log(response.result)
-  }
-
-}
-
-<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">howToSellAnItemForWaves</span>(<span class="hljs-params">seed, itemId, priceInWaves, amount</span>) </span>{
-
-  <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> items.sellItem(seed, itemId, items.waves(priceInWaves), amount)
-  <span class="hljs-keyword">if</span> (isResult(response)) {
-    <span class="hljs-built_in">console</span>.log(response.result)
-  }
-
-}
-
-<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">howToGetAListOfItemsForSale</span>(<span class="hljs-params">itemId</span>) </span>{
-  <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> items.itemsForSale(itemId, <span class="hljs-string">'WAVES'</span>)
-  <span class="hljs-keyword">if</span> (isResult(response)) {
-    <span class="hljs-built_in">console</span>.log(response.result)
-    <span class="hljs-comment">/* response example
-    [
-      { amount: 1, price: 1.2 }
-    ]
-    */</span>
-  }
-}
-
-</code></pre>
+}</code></pre>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
