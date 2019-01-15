@@ -34,7 +34,7 @@
     "url": "https://github.com/wavesplatform/waves-games.git"
   },
   "dependencies": {
-    "@waves/waves-transactions": "^3.0.1",
+    "@waves/waves-transactions": "^3.0.18",
     "axios": "^0.18.0",
     "ncp": "^2.0.0",
     "waves-crypto": "^1.0.39"

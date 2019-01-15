@@ -136,10 +136,7 @@ export function Items(chainId: ChainId): IItems {
 
   async function getItemSuply(itemId: string, currency: Currency): Promise<Record<number, number>> {
     try {
-      // const orderbook = await getOrderbookPair(itemId, currencies[currency], matcherUri)
-      const orderbook = {
-        asks: [{ amount: 2, price: 123300000000 }]
-      } as OrderbookPair
+      const orderbook = await getOrderbookPair(itemId, currencies[currency], matcherUri)
       const suply = []
 
       for (const ask of orderbook.asks) {
