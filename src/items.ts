@@ -1,8 +1,8 @@
 import { issue, data, burn, reissue, order, broadcast, cancelOrder } from '@waves/waves-transactions'
-import { Distribution, Currency, Price, ChainId, Intent, AssetInfo, ItemParams, AmountPricePair, OrderbookPair } from "./types"
+import { Distribution, Currency, Price, ChainId, Intent, AssetInfo, ItemParams, AmountPricePair } from "./types"
 import { config } from "./config"
-import { IIssueParams, IReissueParams, IBurnParams, IIssueTransaction, IDataParams, IDataTransaction, IOrder, IBurnTransaction, IReissueTransaction, WithId, ICancelOrder } from '@waves/waves-transactions/transactions'
-import { TSeedTypes } from '@waves/waves-transactions/types'
+import { IIssueParams, IReissueParams, IBurnParams, IIssueTransaction, IDataParams, IDataTransaction, IOrder, IBurnTransaction, IReissueTransaction, WithId, ICancelOrder } from '@waves/waves-transactions'
+import { TSeedTypes } from '@waves/waves-transactions'
 import { address, PublicKey } from 'waves-crypto'
 import { getAssetInfo, getItemParams, getItemDistribution, createOrder, getItemDetailsList, getOrderbookPair } from './general'
 
@@ -80,14 +80,46 @@ export interface IItems {
    * const { create } = Items(ChainId.Testnet)
    *
    * const items = Items(ChainId.Testnet)
-   * const request = create(100, true, { version: 1, main: { name: 'The sword of pain', img: 'img_url' }, misc: {} }, 'creatorSeed')
-   * const item = await request.execute()
+   * const intent = create(100, true, { version: 1, main: { name: 'The sword of pain', img: 'img_url' }, misc: {} }, 'creatorSeed')
+   * const item = await intent.execute()
    *
    * ```
    *
    */
   create: (amount: number, isLimited: boolean, params: ItemParams, seed: TSeedTypes) => Intent<Item>
+
+  /**
+   * Changes created item amount in case it was not previously freezed.
+   *
+   * ### Usage
+   * ```js
+   * const { Items } = require('@waves/waves-games')
+   * const { changeAmount } = Items(ChainId.Testnet)
+   *
+   * const items = Items(ChainId.Testnet)
+   * const intent = changeAmount('itemId', 200, false, 'creatorSeed')
+   * await intent.execute()
+   *
+   * ```
+   *
+   */
   changeAmount: (itemId: string, by: number, freeze: boolean, seed: string) => Intent<boolean>
+
+  /**
+   * Changes created item amount in case it was not previously freezed.
+   *
+   * ### Usage
+   * ```js
+   * const { Items } = require('@waves/waves-games')
+   * const { sell } = Items(ChainId.Testnet)
+   *
+   * const items = Items(ChainId.Testnet)
+   * const intent = sell('itemId', waves(2.0), 1, 'sellerSeed')
+   * const order = await intent.execute()
+   *
+   * ```
+   *
+   */
   sell: (itemId: string, price: Price, amount: number, seed: string) => Intent<IOrder>
   buy: (itemId: string, price: Price, amount: number, seed: string) => Intent<IOrder>
   cancel: (orderId: string, amountPricePair: AmountPricePair, seed: string) => Intent<boolean>

@@ -105,7 +105,7 @@
 					<div class="tsd-signature tsd-kind-icon">buy<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in items.ts:92</li>
+							<li>Defined in items.ts:124</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -145,7 +145,7 @@
 					<div class="tsd-signature tsd-kind-icon">cancel<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in items.ts:93</li>
+							<li>Defined in items.ts:125</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -182,9 +182,22 @@
 					<div class="tsd-signature tsd-kind-icon">change<wbr>Amount<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in items.ts:90</li>
+							<li>Defined in items.ts:106</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Changes created item amount in case it was not previously freezed.</p>
+						</div>
+						<h3 id="usage">Usage</h3>
+						<pre><code class="language-js"><span class="hljs-keyword">const</span> { Items } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@waves/waves-games'</span>)
+<span class="hljs-keyword">const</span> { changeAmount } = Items(ChainId.Testnet)
+
+<span class="hljs-keyword">const</span> items = Items(ChainId.Testnet)
+<span class="hljs-keyword">const</span> intent = changeAmount(<span class="hljs-string">'itemId'</span>, <span class="hljs-number">200</span>, <span class="hljs-literal">false</span>, <span class="hljs-string">'creatorSeed'</span>)
+<span class="hljs-keyword">await</span> intent.execute()
+</code></pre>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -234,8 +247,8 @@
 <span class="hljs-keyword">const</span> { create } = Items(ChainId.Testnet)
 
 <span class="hljs-keyword">const</span> items = Items(ChainId.Testnet)
-<span class="hljs-keyword">const</span> request = create(<span class="hljs-number">100</span>, <span class="hljs-literal">true</span>, { <span class="hljs-attr">version</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">main</span>: { <span class="hljs-attr">name</span>: <span class="hljs-string">'The sword of pain'</span>, <span class="hljs-attr">img</span>: <span class="hljs-string">'img_url'</span> }, <span class="hljs-attr">misc</span>: {} }, <span class="hljs-string">'creatorSeed'</span>)
-<span class="hljs-keyword">const</span> item = <span class="hljs-keyword">await</span> request.execute()
+<span class="hljs-keyword">const</span> intent = create(<span class="hljs-number">100</span>, <span class="hljs-literal">true</span>, { <span class="hljs-attr">version</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">main</span>: { <span class="hljs-attr">name</span>: <span class="hljs-string">'The sword of pain'</span>, <span class="hljs-attr">img</span>: <span class="hljs-string">'img_url'</span> }, <span class="hljs-attr">misc</span>: {} }, <span class="hljs-string">'creatorSeed'</span>)
+<span class="hljs-keyword">const</span> item = <span class="hljs-keyword">await</span> intent.execute()
 </code></pre>
 					</div>
 					<div class="tsd-type-declaration">
@@ -366,9 +379,22 @@ getItemList(<span class="hljs-string">'creatorAddress'</span>).then(<span class=
 					<div class="tsd-signature tsd-kind-icon">sell<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in items.ts:91</li>
+							<li>Defined in items.ts:123</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Changes created item amount in case it was not previously freezed.</p>
+						</div>
+						<h3 id="usage">Usage</h3>
+						<pre><code class="language-js"><span class="hljs-keyword">const</span> { Items } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@waves/waves-games'</span>)
+<span class="hljs-keyword">const</span> { sell } = Items(ChainId.Testnet)
+
+<span class="hljs-keyword">const</span> items = Items(ChainId.Testnet)
+<span class="hljs-keyword">const</span> intent = sell(<span class="hljs-string">'itemId'</span>, waves(<span class="hljs-number">2.0</span>), <span class="hljs-number">1</span>, <span class="hljs-string">'sellerSeed'</span>)
+<span class="hljs-keyword">const</span> order = <span class="hljs-keyword">await</span> intent.execute()
+</code></pre>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">

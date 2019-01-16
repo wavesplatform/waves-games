@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { AssetInfo, OrderData, ItemDetails, OrderbookPair, ItemParams, ItemDistribution } from 'types'
-import { IOrder } from '@waves/waves-transactions/transactions'
+import { IOrder } from '@waves/waves-transactions'
 
 export const getAssetInfo = (id: string, apiBase: string): Promise<AssetInfo> => {
   return new Promise<AssetInfo>((resolve, reject) => {

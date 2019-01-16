@@ -18,7 +18,7 @@ const create = (path: string): Promise<void | error> =>
   new Promise((resolve, reject) => mkdir(path, (err) => err ? reject(err) : resolve()))
 
 const run = (cmd: string, cwd?: string): Promise<void | error> =>
-  new Promise((resolve, reject) => exec(cmd, { cwd }, (err) => err ? reject(err) : resolve()))
+  new Promise((resolve, reject) => exec(cmd, { cwd }, (err, out) => err ? reject(err + out) : resolve()))
 
 const files = (path: string, filter: (file: string) => boolean = (_) => true): Promise<string[] | Error> =>
   new Promise((resolve, reject) => readdir(path, (err, files) => err ? reject(err) : resolve(files.filter(filter))))
