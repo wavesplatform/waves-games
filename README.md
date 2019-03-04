@@ -11,17 +11,3 @@ and enables game developers to do the following:
 - List items assosiated with a particular game (address)
 - List items for sale by players or developers
 
-### Usage
-
-```js
-async function howToCreateAnItem(creatorSeed) {
-
-    const { Items } = require('@waves/waves-games')
-    const { create } = Items(ChainId.Testnet)
-   
-    const items = Items(ChainId.Testnet)
-    const request = create(100, true, { version: 1, main: { name: 'The sword of pain', img: 'img_url' }, misc: {} creatorSeed)
-    const item = await request.execute()
-   
-}
-```
