@@ -1,44 +1,9 @@
 {
+  "extends": "./tsconfig.build.json",
+  "include": ["src/**/*.ts", "test/**/*.ts"],
+  "exclude": ["dist"],
   "compilerOptions": {
-    "target": "es6",
-    "lib": [
-      "es6"
-    ],
-    //"sourceMap": true,
-    "declaration": true,
-    "module": "commonjs",
-    "outDir": "dist",
-    "strict": false,
-    "alwaysStrict": false,
-    "strictNullChecks": false,
-    "noImplicitAny": false,
-    "baseUrl": "./src"
-  },
-  "jsdoc": "dist/jsdoc",
-  "include": [
-    "src/**/*"
-    //"./declarations/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "usage",
-    "**/*.spec.ts"
-  ],
-  "typedocOptions": {
-    "mode": "file",
-    "out": "docs",
-    "exclude": "test",
-    "theme": "./node_modules/typedoc-clarity-theme",
-    "ignoreCompilerErrors": true,
-    "excludePrivate": true,
-    "excludeNotExported": true,
-    "target": "ES6",
-    "moduleResolution": "node",
-    "preserveConstEnums": true,
-    "stripInternal": true,
-    "suppressExcessPropertyErrors": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "module": "commonjs"
+    "rootDir": ".",
+    "types": ["node", "jest"]
   }
 }
