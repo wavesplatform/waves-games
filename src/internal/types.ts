@@ -24,6 +24,11 @@ export interface ItemParams<T> {
   misc: T,
 }
 
+export interface ItemDetails {
+  key: string,
+  value: ItemParams<any>,
+}
+
 export interface Item<T = any> {
   id: string,
   name: string,
@@ -34,4 +39,22 @@ export interface Item<T = any> {
   timestamp?: number
   misc: T,
   rawParams: ItemParams<T>,
+}
+
+export interface IOrderData {
+  sender: string,
+  orderId: string,
+  signature: string
+}
+
+export interface IAssetInfo {
+  assetId: string,
+  issueHeight: number,
+  issueTimestamp: number,
+  issuer: string,
+  name: string,
+  description: string,
+  decimals: number,
+  reissuable: boolean,
+  quantity: LONG,
 }
