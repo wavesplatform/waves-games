@@ -1,7 +1,8 @@
 import { ChainId, ClientOptions, Item, ItemParams, LONG, Price } from './types'
-import { IOrder, TSeedTypes } from '@waves/waves-transactions'
+import { broadcast, data, IDataParams, IIssueParams, IOrder, issue, TSeedTypes } from '@waves/waves-transactions'
 import { Api, ApiOptions } from './api'
 import { config } from './config'
+import { ItemBuilder } from './helpers/item-builder'
 
 export class Client {
   // Mainnet or Testnet
@@ -33,7 +34,32 @@ export class Client {
   }
 
   async createItem(params: ItemParams<any>, quantity: LONG, reissuable: boolean): Promise<Item> {
-    return Promise.resolve(<any>{})
+    const issueParams: IIssueParams = {
+      decimals: 0,
+      quantity,
+      reissuable,
+      name: 'ITEM',
+      description: '',
+      chainId: this.chainId,
+    }
+    const issueTx = issue(issueParams, this._seed)
+
+    const dataParams: IDataParams = {
+      data: [{
+        key: issueTx.id,
+        value: JSON.stringify(params),
+      }],
+    }
+    const dataTx = data(dataParams, this._seed)
+
+    const nodeUri = this._api.options.nodeUri
+    await Promise.all([broadcast(issueTx, nodeUri), broadcast(dataTx, nodeUri)])
+
+    const item: Item = new ItemBuilder(issueTx)
+      .setItemParams(params)
+      .build()
+
+    return item
   }
 
   async sellItem(itemId: string, amount: LONG, price: Price): Promise<IOrder> {

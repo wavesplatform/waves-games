@@ -62,10 +62,17 @@
     "@types/crypto-js" "^3.1.43"
     crypto-js "^3.1.9-1"
 
-"@waves/waves-transactions@^3.2.0":
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/@waves/waves-transactions/-/waves-transactions-3.2.0.tgz#0754699b5dab0ffc1e2c2b1f6c02a063227c212a"
-  integrity sha512-E7jC27wzbORNKYVKFBdCG9tCBIpZtgcpaG13JzL+2vJeGt41lIG9Kz4cE9ZqSSrenq5HH0DYwzYqULNw56b85A==
+"@waves/waves-rest@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@waves/waves-rest/-/waves-rest-0.0.7.tgz#27b3090fe468d17ed1c5b3f771db39c40d98502a"
+  integrity sha512-Jfk3LMyvTS3h2l63M9QdGkFCAPJ39cv10YSa01lRKLgDE45q93ac0QogITblZl3eqjvk4JnMo3vvgAA/710RCQ==
+  dependencies:
+    "@waves/waves-transactions" "^3.3.2"
+
+"@waves/waves-transactions@^3.3.2":
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/@waves/waves-transactions/-/waves-transactions-3.3.2.tgz#56832b7f4d9183544eab8b98ca85ee7562f06f12"
+  integrity sha512-5tums+sFhK+Uh2ty9cQm5R+genrJjRZYZGce/72NH/sKSGAABAXykeVRmJ0e3lWEcOZ5fV5pOyZBp3Aq442Kpw==
   dependencies:
     "@waves/marshall" "0.4.1"
     "@waves/waves-crypto" "^2.0.4"

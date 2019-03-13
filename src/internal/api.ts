@@ -1,7 +1,8 @@
 import { Transport } from './transports/base'
 import { AxiosTransport } from './transports/axios'
-import { IOrder, WithId } from '@waves/waves-transactions'
 import { IAssetInfo, IOrderData, ItemDetails, ItemParams } from './types'
+import { IOrder } from '@waves/waves-transactions'
+import { Order } from '@waves/waves-rest'
 
 export interface ApiOptions {
   nodeUri: string,
@@ -35,9 +36,9 @@ export class Api {
     return await this.node.get<ItemDetails[]>(`addresses/data/${creatorAddress}`)
   }
 
-  async placeOrder(order: IOrder): Promise<IOrder & WithId> {
+  async placeOrder(order: IOrder): Promise<Order> {
     const res = await this.matcher.post<MatcherResponse>('orderbook', order)
-    return res.message as IOrder & WithId
+    return res.message as Order
   }
 
   async cancelOrder(orderData: IOrderData): Promise<string> {
