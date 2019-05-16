@@ -1,16 +1,16 @@
 import { issue, data, burn, reissue, order, broadcast, cancelOrder } from '@waves/waves-transactions'
-import { Distribution, Currency, Price, ChainId, Intent, AssetInfo, ItemParams, AmountPricePair } from "./types"
+import { Distribution, Currency, Price, ChainId, Intent, AssetInfo, ItemParams, AmountPricePair, ItemCreateParams } from "./types"
 import { config } from "./config"
 import { IIssueParams, IReissueParams, IBurnParams, IIssueTransaction, IDataParams, IDataTransaction, IOrder, IBurnTransaction, IReissueTransaction, WithId, ICancelOrder } from '@waves/waves-transactions'
 import { TSeedTypes } from '@waves/waves-transactions'
-import { address, PublicKey } from 'waves-crypto'
+import { address, PublicKey } from '@waves/waves-crypto'
 import { getAssetInfo, getItemParams, getItemDistribution, createOrder, getItemDetailsList, getOrderbookPair } from './general'
 
 export interface Item<T = any> {
   id: string,
   amount: string | number,
   gameId: string,
-  img: string,
+  imageUrl: string,
   name: string,
   isLimited: boolean,
   timestamp?: number
@@ -86,7 +86,7 @@ export interface IItems {
    * ```
    *
    */
-  create: (amount: number, isLimited: boolean, params: ItemParams, seed: TSeedTypes) => Intent<Item>
+  create: <T = any>(params: ItemCreateParams<T>, seed: TSeedTypes) => Intent<Item>
 
   /**
    * Changes created item amount in case it was not previously freezed.
@@ -181,21 +181,33 @@ export function Items(chainId: ChainId): IItems {
     }
   }
 
-  function create(amount: number, isLimited: boolean, params: ItemParams, seed: TSeedTypes): Intent<Item> {
+  function create<T = any>(params: ItemCreateParams<T>, seed: TSeedTypes): Intent<Item> {
+
     const issueParams: IIssueParams = {
       decimals: 0,
-      quantity: amount,
-      reissuable: !isLimited,
+      quantity: params.amount,
+      reissuable: !params.isLimited,
       description: ``,
       name: 'ITEM',
       chainId,
     }
+
     const issueTx: IIssueTransaction & WithId = issue(issueParams, seed)
+
+    const dataTxJson = {
+      version: params.version,
+      name: params.name,
+      imageUrl: params.imageUrl,
+      misc: params.misc,
+    }
+
+    if (params.misc == undefined || Object.keys(params.misc).length == 0)
+      delete dataTxJson.misc
 
     const dataParams: IDataParams = {
       data: [{
         key: issueTx.id,
-        value: JSON.stringify(params)
+        value: JSON.stringify(dataTxJson)
       }]
     }
     const dataTx: IDataTransaction = data(dataParams, seed)
@@ -204,11 +216,9 @@ export function Items(chainId: ChainId): IItems {
 
     return {
       entries,
-      execute: () => new Promise<Item>(async (resolve, reject) => {
+      execute: () => new Promise<Item<T>>(async (resolve, reject) => {
         try {
-          await Promise.all(
-            entries.map(entry => broadcast(entry, nodeUri))
-          )
+          await Promise.all(entries.map(entry => broadcast(entry, nodeUri)))
           resolve(_buildItem(issueTx, params))
         } catch (err) {
           reject(err)
@@ -321,13 +331,13 @@ export function Items(chainId: ChainId): IItems {
   }
 
   function _buildItem(data: AssetInfo | any, itemParams: ItemParams): Item {
-    const { name, img } = itemParams.main
+    const { name, imageUrl } = itemParams
 
     return {
       id: data.assetId || data.id,
       gameId: data.issuer || address({ public: data.senderPublicKey } as PublicKey, chainId),
       name,
-      img,
+      imageUrl,
       amount: data.quantity,
       isLimited: !data.reissuable,
       misc: itemParams.misc,

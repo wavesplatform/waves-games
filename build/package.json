@@ -21,5 +21,9 @@
   "dependencies": {
     "axios": "^0.18.0",
     "@waves/waves-transactions": "^3.0.18"
+  },
+  "devDependencies": {
+    "@types/ncp": "^2.0.1",
+    "@types/rimraf": "^2.0.2"
   }
 }

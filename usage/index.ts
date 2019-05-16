@@ -5,11 +5,11 @@ const seed = '9e0fa09dcc6e40ae95f5d8e6795c76c5fb97507be9ff40d9b6f58df27c171e53'
 
 async function createItem() {
   const items = Items(ChainId.Testnet)
-  const request = items.create(100, false, { version: 1, main: { name: 'The sword of pain', img: 'img_url' }, misc: {} }, seed)
+  const request = items.create({ amount: 100, version: 1, name: 'The sword of pain', imageUrl: 'img_url', misc: {}, isLimited: true }, seed)
   const item = await request.execute()
   console.log(item)
 }
-//createItem()
+createItem()
 
 
 async function getItem() {

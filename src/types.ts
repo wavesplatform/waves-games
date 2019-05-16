@@ -21,10 +21,16 @@ export interface ItemDetails {
   type?: string
 }
 
-export interface ItemParams {
+export interface ItemParams<T = any> {
   version: number,
-  main: { img: string, name: string },
-  misc: any
+  imageUrl: string,
+  name: string,
+  misc: T | undefined
+}
+
+export interface ItemCreateParams<T = any> extends ItemParams<T> {
+  amount: number
+  isLimited: boolean
 }
 
 export interface ItemDistribution {

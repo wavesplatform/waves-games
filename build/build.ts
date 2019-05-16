@@ -1,27 +1,4 @@
-import { mkdir, readdir } from "fs"
-import { exec } from "child_process"
-import { resolve } from "path"
-const ncp = require('ncp').ncp
-const rimraf = require('rimraf')
-
-type error = string
-
-const p = (...path: string[]) => resolve(__dirname, ...path)
-
-const remove = (path: string): Promise<void | error> =>
-  new Promise((resolve, reject) => rimraf(path, (err) => err ? reject(err) : resolve()))
-
-const copy = (src: string, dst: string): Promise<void | error> =>
-  new Promise((resolve, reject) => ncp(src, dst, (err) => err ? reject(err) : resolve()))
-
-const create = (path: string): Promise<void | error> =>
-  new Promise((resolve, reject) => mkdir(path, (err) => err ? reject(err) : resolve()))
-
-const run = (cmd: string, cwd?: string): Promise<void | error> =>
-  new Promise((resolve, reject) => exec(cmd, { cwd }, (err, out) => err ? reject(err + out) : resolve()))
-
-const files = (path: string, filter: (file: string) => boolean = (_) => true): Promise<string[] | Error> =>
-  new Promise((resolve, reject) => readdir(path, (err, files) => err ? reject(err) : resolve(files.filter(filter))))
+import { remove, p, run, files, copy, create, npmGetVersion, copyJson, versionToString } from './utils'
 
 async function build() {
   try {
@@ -52,6 +29,15 @@ async function build() {
     await copy(p('tmp/dist'), p('../dist'))
     await copy(p('tmp/docs'), p('../docs'))
     await remove(p('tmp'))
+
+    const ver = await npmGetVersion('@waves/waves-games')
+    ver.patch++
+    await copyJson(p('../package.json'), p('../dist/package.json'), {
+      main: 'index.js',
+      types: 'index.d.ts',
+      version: versionToString(ver),
+      devDependencies: undefined,
+    })
   } catch (error) {
     console.log(error)
   }
