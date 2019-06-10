@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-import { ChainId } from './types'
 import * as program from 'commander'
-import { Items } from './items'
+import { wavesItems } from 'index'
+import { MAIN_NET_CHAIN_ID } from '@waves/waves-crypto'
 
 program
   .version('0.0.1')
@@ -11,7 +11,7 @@ program
     const params = eval("(" + item + ")")
     params.version = 1
     try {
-      const r = await (Items(ChainId.Mainnet).create(params, seed).execute())
+      const r = await (wavesItems(MAIN_NET_CHAIN_ID).createItem(params).broadcast(seed))
       console.log(r)
     } catch (error) {
       console.log(error)

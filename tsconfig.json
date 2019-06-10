@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es6",
     "lib": [
-      "es6"
+      "esnext"
     ],
     //"sourceMap": true,
     "declaration": true,
