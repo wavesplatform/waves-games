@@ -5,7 +5,10 @@ import { promptOneOf, promptForNumber, promptForString, promptForFile, promptCon
 import { cyan, end } from './colors'
 import { totalFee, formatWaves } from './utils'
 import { urlRegexp } from './generic'
-import { crypto } from '@waves/waves-crypto'
+import { crypto, ChaidId } from '@waves/waves-crypto'
+import { wavesApi, config, axiosHttp } from '@waves/waves-rest'
+import { Bar, Presets } from 'cli-progress'
+import axios from 'axios'
 
 // program
 //   .version('0.0.1')
@@ -31,6 +34,7 @@ const wizard = async (chainId: string) => {
   try {
 
     const { address } = crypto()
+    const { broadcast } = wavesApi(ChaidId.isMainnet(chainId) ? config.mainnet : config.testnet, axiosHttp(axios))
 
     const name = await promptForString(`Provide an item name ${cyan}(eg. Sword of power)${end}: `)
     const imageUrl = await promptForString(`Provide an image url ${cyan}(eg. https://cdn.awesomegame.com/img/id)${end}: `,
@@ -66,9 +70,18 @@ const wizard = async (chainId: string) => {
 
     if (await promptConfirmation('Do you want to proceed?')) {
       console.log('\nBroadcasting transactions to blockchain...')
-      await intent.broadcast(seed)
-      console.log('Transactions successfully broadcasted.')
-      console.log('Item will appear on blockhain soon.')
+
+      const proggress = new Bar({}, Presets.rect)
+      proggress.start([issue, data].length, 0)
+      const increaseCount = () => {
+        proggress.increment(1)
+      }
+      await Promise.all([
+        broadcast(issue).then(increaseCount),
+        broadcast(data).then(increaseCount),
+      ])
+      proggress.stop()
+      console.log('Item creation successful.')
     } else {
       console.log('Item creation cancelled.')
     }
