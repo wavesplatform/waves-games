@@ -1,4 +1,4 @@
-import { TTx, IOrder, ICancelOrder } from '@waves/waves-transactions'
+import { TTx, IOrder, ICancelOrder, IIssueTransaction, WithId, IDataTransaction } from '@waves/waves-transactions'
 
 export type TItemMisc = Record<string, number | string | object>
 
@@ -27,15 +27,16 @@ export type TItemOrder = {
   item: TItem
 }
 
-export type TIntent<T> = {
-  entries(seed: string): (TTx | IOrder | ICancelOrder)[]
+export type TIntent<T, TEntries> = {
+  entries(seed: string): TEntries
+  result(seed: string): T
   broadcast(seed: string): Promise<T>
   //keeper(): Promise<T>
 }
 
 export interface IWavesItems {
   //Forging
-  createItem(params: TCreateItemParams): TIntent<TItem>
+  createItem(params: TCreateItemParams): TIntent<TItem, [IIssueTransaction & WithId, IDataTransaction & WithId]>
 
   //Items and catalog
   getUserItems(gameId: string, address: string): Promise<TItem[]>
@@ -43,7 +44,7 @@ export interface IWavesItems {
   getItem(itemId: string): Promise<TItem>
 
   //Trading 
-  buyItem(itemId: string, price: number): TIntent<TItemOrder>
-  sellItem(itemId: string, price: number): TIntent<TItemOrder>
-  cancelOrder(order: TItemOrder): TIntent<{}>
+  buyItem(itemId: string, price: number): TIntent<TItemOrder, IOrder>
+  sellItem(itemId: string, price: number): TIntent<TItemOrder, IOrder>
+  cancelOrder(order: TItemOrder): TIntent<{}, ICancelOrder>
 }

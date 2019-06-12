@@ -97,13 +97,13 @@
 					<a name="buyitem" class="tsd-anchor"></a>
 					<h3>buy<wbr>Item</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">buy<wbr>Item<span class="tsd-signature-symbol">(</span>itemId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, price<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../globals.html#tintent" class="tsd-signature-type">TIntent</a><span class="tsd-signature-symbol">&lt;</span><a href="../globals.html#titemorder" class="tsd-signature-type">TItemOrder</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">buy<wbr>Item<span class="tsd-signature-symbol">(</span>itemId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, price<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../globals.html#tintent" class="tsd-signature-type">TIntent</a><span class="tsd-signature-symbol">&lt;</span><a href="../globals.html#titemorder" class="tsd-signature-type">TItemOrder</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">IOrder</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in interface.ts:43</li>
+									<li>Defined in interface.ts:47</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -115,7 +115,7 @@
 									<h5>price: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../globals.html#tintent" class="tsd-signature-type">TIntent</a><span class="tsd-signature-symbol">&lt;</span><a href="../globals.html#titemorder" class="tsd-signature-type">TItemOrder</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../globals.html#tintent" class="tsd-signature-type">TIntent</a><span class="tsd-signature-symbol">&lt;</span><a href="../globals.html#titemorder" class="tsd-signature-type">TItemOrder</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">IOrder</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -123,13 +123,13 @@
 					<a name="cancelorder" class="tsd-anchor"></a>
 					<h3>cancel<wbr>Order</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">cancel<wbr>Order<span class="tsd-signature-symbol">(</span>order<span class="tsd-signature-symbol">: </span><a href="../globals.html#titemorder" class="tsd-signature-type">TItemOrder</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../globals.html#tintent" class="tsd-signature-type">TIntent</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">__type</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">cancel<wbr>Order<span class="tsd-signature-symbol">(</span>order<span class="tsd-signature-symbol">: </span><a href="../globals.html#titemorder" class="tsd-signature-type">TItemOrder</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../globals.html#tintent" class="tsd-signature-type">TIntent</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">__type</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ICancelOrder</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in interface.ts:45</li>
+									<li>Defined in interface.ts:49</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -138,7 +138,7 @@
 									<h5>order: <a href="../globals.html#titemorder" class="tsd-signature-type">TItemOrder</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../globals.html#tintent" class="tsd-signature-type">TIntent</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">__type</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../globals.html#tintent" class="tsd-signature-type">TIntent</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">__type</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ICancelOrder</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -146,13 +146,13 @@
 					<a name="createitem" class="tsd-anchor"></a>
 					<h3>create<wbr>Item</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>Item<span class="tsd-signature-symbol">(</span>params<span class="tsd-signature-symbol">: </span><a href="../globals.html#tcreateitemparams" class="tsd-signature-type">TCreateItemParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../globals.html#tintent" class="tsd-signature-type">TIntent</a><span class="tsd-signature-symbol">&lt;</span><a href="../globals.html#titem" class="tsd-signature-type">TItem</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Item<span class="tsd-signature-symbol">(</span>params<span class="tsd-signature-symbol">: </span><a href="../globals.html#tcreateitemparams" class="tsd-signature-type">TCreateItemParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../globals.html#tintent" class="tsd-signature-type">TIntent</a><span class="tsd-signature-symbol">&lt;</span><a href="../globals.html#titem" class="tsd-signature-type">TItem</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">IIssueTransaction</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">WithId</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">IDataTransaction</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">WithId</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in interface.ts:35</li>
+									<li>Defined in interface.ts:39</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -161,7 +161,7 @@
 									<h5>params: <a href="../globals.html#tcreateitemparams" class="tsd-signature-type">TCreateItemParams</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../globals.html#tintent" class="tsd-signature-type">TIntent</a><span class="tsd-signature-symbol">&lt;</span><a href="../globals.html#titem" class="tsd-signature-type">TItem</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../globals.html#tintent" class="tsd-signature-type">TIntent</a><span class="tsd-signature-symbol">&lt;</span><a href="../globals.html#titem" class="tsd-signature-type">TItem</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">IIssueTransaction</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">WithId</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">IDataTransaction</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">WithId</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -175,7 +175,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in interface.ts:40</li>
+									<li>Defined in interface.ts:44</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -198,7 +198,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in interface.ts:39</li>
+									<li>Defined in interface.ts:43</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -221,7 +221,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in interface.ts:38</li>
+									<li>Defined in interface.ts:42</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -241,13 +241,13 @@
 					<a name="sellitem" class="tsd-anchor"></a>
 					<h3>sell<wbr>Item</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">sell<wbr>Item<span class="tsd-signature-symbol">(</span>itemId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, price<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../globals.html#tintent" class="tsd-signature-type">TIntent</a><span class="tsd-signature-symbol">&lt;</span><a href="../globals.html#titemorder" class="tsd-signature-type">TItemOrder</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">sell<wbr>Item<span class="tsd-signature-symbol">(</span>itemId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, price<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../globals.html#tintent" class="tsd-signature-type">TIntent</a><span class="tsd-signature-symbol">&lt;</span><a href="../globals.html#titemorder" class="tsd-signature-type">TItemOrder</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">IOrder</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in interface.ts:44</li>
+									<li>Defined in interface.ts:48</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -259,7 +259,7 @@
 									<h5>price: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../globals.html#tintent" class="tsd-signature-type">TIntent</a><span class="tsd-signature-symbol">&lt;</span><a href="../globals.html#titemorder" class="tsd-signature-type">TItemOrder</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../globals.html#tintent" class="tsd-signature-type">TIntent</a><span class="tsd-signature-symbol">&lt;</span><a href="../globals.html#titemorder" class="tsd-signature-type">TItemOrder</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">IOrder</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -322,6 +322,42 @@
 					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="../globals.html#titemorder" class="tsd-kind-icon">TItem<wbr>Order</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="../globals.html#cyan" class="tsd-kind-icon">cyan</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="../globals.html#end" class="tsd-kind-icon">end</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="../globals.html#red" class="tsd-kind-icon">red</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="../globals.html#urlregexp" class="tsd-kind-icon">url<wbr>Regexp</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../globals.html#formatwaves" class="tsd-kind-icon">format<wbr>Waves</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../globals.html#promptconfirmation" class="tsd-kind-icon">prompt<wbr>Confirmation</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../globals.html#promptforfile" class="tsd-kind-icon">prompt<wbr>For<wbr>File</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../globals.html#promptfornumber" class="tsd-kind-icon">prompt<wbr>For<wbr>Number</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../globals.html#promptforstring" class="tsd-kind-icon">prompt<wbr>For<wbr>String</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="../globals.html#promptoneof" class="tsd-kind-icon">prompt<wbr>One<wbr>Of</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../globals.html#toint" class="tsd-kind-icon">to<wbr>Int</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../globals.html#totalfee" class="tsd-kind-icon">total<wbr>Fee</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="../globals.html#wavesitems" class="tsd-kind-icon">waves<wbr>Items</a>

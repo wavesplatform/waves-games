@@ -16,6 +16,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^23.3.10",
+    "@types/memoizee": "^0.4.2",
     "@types/node": "^10.14.8",
     "@types/readline-sync": "^1.4.3",
     "copy-webpack-plugin": "^4.5.2",
@@ -45,6 +46,8 @@
     "@waves/waves-transactions": "^3.10.1",
     "axios": "^0.19.0",
     "commander": "^2.20.0",
+    "console-table-printer": "^1.0.0-beta17",
+    "memoizee": "^0.4.14",
     "readline-sync": "^1.4.9",
     "select-prompt": "^0.3.1",
     "switch-prompt": "^0.1.0"

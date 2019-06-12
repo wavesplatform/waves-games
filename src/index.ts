@@ -1,11 +1,13 @@
 import { IWavesItems, TCreateItemParams, TIntent, TItem, TItemMisc, TItemOrder } from './interface'
-import { issue, data, IDataTransaction, IIssueTransaction, WithId, order, cancelOrder, IOrder, TTx } from '@waves/waves-transactions'
+import { issue, data, IDataTransaction, IIssueTransaction, WithId, order, cancelOrder, IOrder, TTx, ICancelOrder } from '@waves/waves-transactions'
 import { TChainId, crypto, MAIN_NET_CHAIN_ID, ChaidId } from '@waves/waves-crypto'
 import { wavesApi } from '@waves/waves-rest'
 import { config } from '@waves/waves-rest/config'
 import { axiosHttp } from '@waves/waves-rest/http-bindings'
 import './extensions'
 import axios from 'axios'
+import { urlRegexp } from './generic'
+import * as memoizee from 'memoizee'
 
 type TItemPayload = {
   version: number
@@ -22,9 +24,9 @@ export const wavesItems = (chainId: TChainId): IWavesItems => {
 
   const { broadcast, getIssueTxs, getKeyValuePairs, getAssetsBalance, getAssetInfo, getValueByKey, placeOrder, cancelOrder: cancelOrderApi } = wavesApi(cfg, axiosHttp(axios))
 
-  const createItem = (params: TCreateItemParams): TIntent<TItem> => {
+  const createItem = (params: TCreateItemParams): TIntent<TItem, [IIssueTransaction & WithId, IDataTransaction & WithId]> => {
 
-    const txs = (seed: string): [IIssueTransaction & WithId, IDataTransaction & WithId] => {
+    const txs = memoizee((seed: string): [IIssueTransaction & WithId, IDataTransaction & WithId] => {
 
       const i = issue({ quantity: params.quantity, reissuable: false, chainId, decimals: 0, name: 'ITEM', description: '' }, seed)
 
@@ -38,43 +40,39 @@ export const wavesItems = (chainId: TChainId): IWavesItems => {
       const d = data({ data: [{ key: i.id, value: JSON.stringify(payload) }] }, seed)
 
       return [i, d]
+    })
+
+    const result = (seed: string): TItem => {
+      const [issue] = txs(seed)
+
+      return {
+        id: issue.id,
+        name: params.name,
+        quantity: params.quantity,
+        gameId: address(seed),
+        created: issue.timestamp,
+        imageUrl: params.imageUrl,
+        misc: params.misc,
+      }
     }
 
     return {
       entries: txs,
+      result,
       broadcast: async (seed: string): Promise<TItem> => {
         const [issue, data] = txs(seed)
-
         await Promise.all([
-          broadcast(<any>issue),
-          broadcast(<any>data),
+          broadcast(issue),
+          broadcast(data),
         ])
 
-        return {
-          id: issue.id,
-          name: params.name,
-          quantity: params.quantity,
-          gameId: address(seed),
-          created: Date.now(),
-          imageUrl: params.imageUrl,
-          misc: params.misc,
-        }
-
+        return result(seed)
       },
     }
   }
 
-  const validURL = (str: string) => {
-    var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
-      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-      '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-      '(\\#[-a-z\\d_]*)?$', 'i') // fragment locator
-      .compile()
-
-    return pattern.test(str)
-  }
+  const validURL = (str: string) =>
+    urlRegexp.test(str)
 
   const validateItemPayload = (data: string, version: number = 1) => {
     try {
@@ -138,9 +136,9 @@ export const wavesItems = (chainId: TChainId): IWavesItems => {
     }
   }
 
-  const buyItem = (itemId: string, price: number): TIntent<TItemOrder> => {
-    const entries = (seed: string) => {
-      const o = order({
+  const buyItem = (itemId: string, price: number): TIntent<TItemOrder, IOrder> => {
+    const entries = (seed: string) =>
+      order({
         amount: 1,
         price: price,
         matcherPublicKey: cfg.matcherPublicKey,
@@ -149,13 +147,11 @@ export const wavesItems = (chainId: TChainId): IWavesItems => {
         priceAsset: null,
       }, seed)
 
-      return [o]
-    }
-
     return ({
       entries,
+      result: undefined,
       broadcast: async (seed: string): Promise<TItemOrder> => {
-        const [o] = entries(seed)
+        const o = entries(seed)
         const item = await getItem(itemId)
         const { id } = await placeOrder(o)
         return { id, price, item, type: 'buy' }
@@ -163,9 +159,9 @@ export const wavesItems = (chainId: TChainId): IWavesItems => {
     })
   }
 
-  const sellItem = (itemId: string, price: number): TIntent<TItemOrder> => {
-    const entries = (seed: string) => {
-      const o = order({
+  const sellItem = (itemId: string, price: number): TIntent<TItemOrder, IOrder> => {
+    const entries = (seed: string) =>
+      order({
         amount: 1,
         price: price,
         matcherPublicKey: cfg.matcherPublicKey,
@@ -174,13 +170,11 @@ export const wavesItems = (chainId: TChainId): IWavesItems => {
         priceAsset: null,
       }, seed)
 
-      return [o]
-    }
-
     return ({
       entries,
+      result: undefined,
       broadcast: async (seed: string): Promise<TItemOrder> => {
-        const [o] = entries(seed)
+        const o = entries(seed)
         const item = await getItem(itemId)
         const { id } = await placeOrder(o)
         return { id, price, item, type: 'sell' }
@@ -188,14 +182,15 @@ export const wavesItems = (chainId: TChainId): IWavesItems => {
     })
   }
 
-  const _cancelOrder = (order: TItemOrder): TIntent<{}> => {
+  const _cancelOrder = (order: TItemOrder): TIntent<{}, ICancelOrder> => {
     const entries = (seed: string) =>
-      [cancelOrder({ orderId: order.id }, seed)]
+      cancelOrder({ orderId: order.id }, seed)
 
     return {
       entries,
+      result: undefined,
       broadcast: async (seed: string): Promise<{}> => {
-        const [o] = entries(seed)
+        const o = entries(seed)
         await cancelOrderApi(order.item.id, 'WAVES', o)
         return {}
       },
