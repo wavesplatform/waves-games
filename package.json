@@ -17,6 +17,7 @@
   "devDependencies": {
     "@types/jest": "^23.3.10",
     "@types/node": "^10.14.8",
+    "@types/readline-sync": "^1.4.3",
     "copy-webpack-plugin": "^4.5.2",
     "jest": "^24.8.0",
     "jsdoc-to-markdown": "^5.0.0",
@@ -43,7 +44,10 @@
     "@waves/waves-rest": "0.0.21",
     "@waves/waves-transactions": "^3.10.1",
     "axios": "^0.19.0",
-    "commander": "^2.20.0"
+    "commander": "^2.20.0",
+    "readline-sync": "^1.4.9",
+    "select-prompt": "^0.3.1",
+    "switch-prompt": "^0.1.0"
   },
   "jest": {
     "moduleFileExtensions": [

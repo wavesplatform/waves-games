@@ -1,3 +1,5 @@
+import { TTx, IOrder, ICancelOrder } from '@waves/waves-transactions'
+
 export type TItemMisc = Record<string, number | string | object>
 
 export type TCreateItemParams = {
@@ -26,6 +28,7 @@ export type TItemOrder = {
 }
 
 export type TIntent<T> = {
+  entries(seed: string): (TTx | IOrder | ICancelOrder)[]
   broadcast(seed: string): Promise<T>
   //keeper(): Promise<T>
 }

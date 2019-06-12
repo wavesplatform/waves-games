@@ -1,5 +1,5 @@
 import { IWavesItems, TCreateItemParams, TIntent, TItem, TItemMisc, TItemOrder } from './interface'
-import { issue, data, IDataTransaction, IIssueTransaction, WithId, order, cancelOrder } from '@waves/waves-transactions'
+import { issue, data, IDataTransaction, IIssueTransaction, WithId, order, cancelOrder, IOrder, TTx } from '@waves/waves-transactions'
 import { TChainId, crypto, MAIN_NET_CHAIN_ID, ChaidId } from '@waves/waves-crypto'
 import { wavesApi } from '@waves/waves-rest'
 import { config } from '@waves/waves-rest/config'
@@ -8,10 +8,10 @@ import './extensions'
 import axios from 'axios'
 
 type TItemPayload = {
-  version: number,
-  name: string,
-  imageUrl: string,
-  misc: TItemMisc,
+  version: number
+  name: string
+  imageUrl: string
+  misc: TItemMisc
 }
 
 export const wavesItems = (chainId: TChainId): IWavesItems => {
@@ -41,12 +41,13 @@ export const wavesItems = (chainId: TChainId): IWavesItems => {
     }
 
     return {
+      entries: txs,
       broadcast: async (seed: string): Promise<TItem> => {
         const [issue, data] = txs(seed)
 
         await Promise.all([
           broadcast(<any>issue),
-          broadcast(<any>data)
+          broadcast(<any>data),
         ])
 
         return {
@@ -59,7 +60,7 @@ export const wavesItems = (chainId: TChainId): IWavesItems => {
           misc: params.misc,
         }
 
-      }
+      },
     }
   }
 
@@ -99,7 +100,7 @@ export const wavesItems = (chainId: TChainId): IWavesItems => {
   const getItemCatalog = async (gameId: string): Promise<TItem[]> => {
     const [issues, kvp] = await Promise.all([
       await getIssueTxs({ sender: gameId }).all().then(i => i.toRecord(x => x.id)),
-      await getKeyValuePairs(gameId)
+      await getKeyValuePairs(gameId),
     ])
 
     const items: TItem[] = kvp
@@ -138,55 +139,66 @@ export const wavesItems = (chainId: TChainId): IWavesItems => {
   }
 
   const buyItem = (itemId: string, price: number): TIntent<TItemOrder> => {
-    return {
+    const entries = (seed: string) => {
+      const o = order({
+        amount: 1,
+        price: price,
+        matcherPublicKey: cfg.matcherPublicKey,
+        orderType: 'buy',
+        amountAsset: itemId,
+        priceAsset: null,
+      }, seed)
+
+      return [o]
+    }
+
+    return ({
+      entries,
       broadcast: async (seed: string): Promise<TItemOrder> => {
-
-        const o = order({
-          amount: 1,
-          price: price,
-          matcherPublicKey: cfg.matcherPublicKey,
-          orderType: 'buy',
-          amountAsset: itemId,
-          priceAsset: null,
-        }, seed)
-
-
+        const [o] = entries(seed)
         const item = await getItem(itemId)
         const { id } = await placeOrder(o)
         return { id, price, item, type: 'buy' }
-      }
-    }
+      },
+    })
   }
 
-
   const sellItem = (itemId: string, price: number): TIntent<TItemOrder> => {
-    return {
+    const entries = (seed: string) => {
+      const o = order({
+        amount: 1,
+        price: price,
+        matcherPublicKey: cfg.matcherPublicKey,
+        orderType: 'buy',
+        amountAsset: itemId,
+        priceAsset: null,
+      }, seed)
+
+      return [o]
+    }
+
+    return ({
+      entries,
       broadcast: async (seed: string): Promise<TItemOrder> => {
-
-        const o = order({
-          amount: 1,
-          price: price,
-          matcherPublicKey: cfg.matcherPublicKey,
-          orderType: 'sell',
-          amountAsset: itemId,
-          priceAsset: null,
-        }, seed)
-
-
+        const [o] = entries(seed)
         const item = await getItem(itemId)
         const { id } = await placeOrder(o)
         return { id, price, item, type: 'sell' }
-      }
-    }
+      },
+    })
   }
 
   const _cancelOrder = (order: TItemOrder): TIntent<{}> => {
+    const entries = (seed: string) =>
+      [cancelOrder({ orderId: order.id }, seed)]
+
     return {
+      entries,
       broadcast: async (seed: string): Promise<{}> => {
-        const o = cancelOrder({ orderId: order.id }, seed)
+        const [o] = entries(seed)
         await cancelOrderApi(order.item.id, 'WAVES', o)
         return {}
-      }
+      },
     }
   }
 
@@ -207,5 +219,5 @@ async function main() {
 }
 
 
-main()
+//main()
 //3PKEQiRe2u6488jdvUAUYshrM4fQPf4omak
