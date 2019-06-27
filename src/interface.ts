@@ -34,6 +34,11 @@ export type TIntent<T, TEntries> = {
   //keeper(): Promise<T>
 }
 
+export type TItarableIntent<T, TEntries> = {
+  entries(seed: string): TEntries
+  broadcast(seed: string): AsyncIterableIterator<T>
+}
+
 export interface IWavesItems {
   //Forging
   createItem(params: TCreateItemParams): TIntent<TItem, [IIssueTransaction & WithId, IDataTransaction & WithId]>

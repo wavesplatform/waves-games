@@ -42,8 +42,8 @@ const wizard = async (chainId: string) => {
         regexp: urlRegexp,
         errorMessage: 'Please provide a valid url.',
       })
-    const quantity = promptForNumber('Provide quantity: ')
-    const seed = promptForFile(`Please specify seed file path ${cyan}(eg. ./seed.txt)${end}: `)
+    const quantity = await promptForNumber('Provide quantity: ')
+    const seed = await promptForFile(`Please specify seed file path ${cyan}(eg. ./seed.txt)${end}: `)
 
     const { createItem } = wavesItems(chainId)
 

@@ -1,4 +1,4 @@
-import { IWavesItems, TCreateItemParams, TIntent, TItem, TItemMisc, TItemOrder } from './interface'
+import { IWavesItems, TCreateItemParams, TIntent, TItem, TItemMisc, TItemOrder, TItarableIntent } from './interface'
 import { issue, data, IDataTransaction, IIssueTransaction, WithId, order, cancelOrder, IOrder, TTx, ICancelOrder } from '@waves/waves-transactions'
 import { TChainId, crypto, MAIN_NET_CHAIN_ID, ChaidId } from '@waves/waves-crypto'
 import { wavesApi } from '@waves/waves-rest'
@@ -70,7 +70,6 @@ export const wavesItems = (chainId: TChainId): IWavesItems => {
       },
     }
   }
-
   const validURL = (str: string) =>
     urlRegexp.test(str)
 
@@ -207,12 +206,3 @@ export const wavesItems = (chainId: TChainId): IWavesItems => {
     cancelOrder: _cancelOrder,
   }
 }
-
-async function main() {
-  const items = await wavesItems(MAIN_NET_CHAIN_ID).getItemCatalog('3PKEQiRe2u6488jdvUAUYshrM4fQPf4omak')
-  console.log(items)
-}
-
-
-//main()
-//3PKEQiRe2u6488jdvUAUYshrM4fQPf4omak
