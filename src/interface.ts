@@ -1,4 +1,4 @@
-import { TTx, IOrder, ICancelOrder, IIssueTransaction, WithId, IDataTransaction } from '@waves/waves-transactions'
+import { IOrder, ICancelOrder, IIssueTransaction, WithId, IDataTransaction } from '@waves/waves-transactions'
 
 export type TItemMisc = Record<string, number | string | object>
 
