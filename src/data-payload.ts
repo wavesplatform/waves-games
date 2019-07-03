@@ -2,9 +2,14 @@ import { Versions } from './versions'
 import { isValidUrl } from './utils'
 import { IDataPayloadMap, TDataPayload } from './interface'
 
-export const getDataPayloadVersion = (jsonObj: object): Versions => (jsonObj ? (jsonObj as { version: Versions }).version : undefined)
+export const getDataPayloadVersion = (jsonObj: object): Versions =>
+  jsonObj ? (jsonObj as { version: Versions }).version : undefined
 
-export const parseDataPayload = (json: string, _throw: 'throw' | undefined = undefined, version?: Versions): { data: TDataPayload; version: Versions } | undefined => {
+export const parseDataPayload = (
+  json: string,
+  _throw: 'throw' | undefined = undefined,
+  version?: Versions,
+): { data: TDataPayload; version: Versions } | undefined => {
   try {
     const j = JSON.parse(json)
     version = version || getDataPayloadVersion(j)

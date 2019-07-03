@@ -3,7 +3,8 @@ import { KeyValuePair, AssetInfo } from '@waves/waves-rest'
 import { parseDataPayload } from './data-payload'
 import { toInt } from './utils'
 
-const oneOf = <A, B, T extends A[keyof A]>(obj: A | B, propA: keyof A, propB: keyof B) => ((obj as A)[propA] || (obj as B)[propB]) as T
+const oneOf = <A, B, T extends A[keyof A]>(obj: A | B, propA: keyof A, propB: keyof B) =>
+  ((obj as A)[propA] || (obj as B)[propB]) as T
 
 export const parseItem = (issueTx: TIssue | AssetInfo, kvp: KeyValuePair): TItem => {
   const id = oneOf<TIssue, AssetInfo, string>(issueTx, 'id', 'assetId')

@@ -11,4 +11,7 @@ export {
   IItemOrder,
   IParamMap,
 } from './interface'
+export { Versions } from './versions'
 export { wavesItemsApi } from './waves-items-api'
+export { parseItem } from './parse-item'
+export { parseDataPayload } from './data-payload'

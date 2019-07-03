@@ -35,10 +35,13 @@ const wizard = async (chainId: string) => {
     const { broadcast } = wavesApi(ChaidId.isMainnet(chainId) ? config.mainnet : config.testnet, axiosHttp(axios))
 
     const name = await promptForString(`Provide an item name ${cyan}(eg. Sword of power)${end}: `)
-    const imageUrl = await promptForString(`Provide an image url ${cyan}(eg. https://cdn.awesomegame.com/img/id)${end}: `, {
-      regexp: urlRegexp,
-      errorMessage: 'Please provide a valid url.',
-    })
+    const imageUrl = await promptForString(
+      `Provide an image url ${cyan}(eg. https://cdn.awesomegame.com/img/id)${end}: `,
+      {
+        regexp: urlRegexp,
+        errorMessage: 'Please provide a valid url.',
+      },
+    )
     const quantity = await promptForNumber('Provide quantity: ')
     const seed = await promptForFile(`Please specify seed file path ${cyan}(eg. ./seed.txt)${end}: `)
 
@@ -89,10 +92,17 @@ const wizard = async (chainId: string) => {
 
 const main = async () => {
   try {
-    const chainId = await promptOneOf([{ value: 'W', title: '1. MAIN NET' }, { value: 'T', title: '2. TEST NET' }], 'Please choose the environment:')
+    const chainId = await promptOneOf(
+      [{ value: 'W', title: '1. MAIN NET' }, { value: 'T', title: '2. TEST NET' }],
+      'Please choose the environment:',
+    )
 
     const value = await promptOneOf(
-      [{ value: 1, title: '1. Create item wizard' }, { value: 2, title: '2. Create item CLI' }, { value: 3, title: '3. File batch item creation' }],
+      [
+        { value: 1, title: '1. Create item wizard' },
+        { value: 2, title: '2. Create item CLI' },
+        { value: 3, title: '3. File batch item creation' },
+      ],
       'Please select one of the following options:',
     )
 
