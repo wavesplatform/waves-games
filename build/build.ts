@@ -8,11 +8,11 @@ async function build() {
     await create(p('tmp'))
     await create(p('tmp/src'))
 
-    await run('npm pack typedoc-clarity-theme', p('tmp'))
-    const tgz = (await files(p('tmp'), f => f.startsWith('typedoc-clarity-theme-')))[0]
-    await run(`tar zxvf ${tgz}`, p('tmp'))
-    await create(p('tmp/node_modules'))
-    await copy(p('tmp/package'), p('tmp/node_modules/typedoc-clarity-theme'))
+    //await run('npm pack typedoc-clarity-theme', p('tmp'))
+    //const tgz = (await files(p('tmp'), f => f.startsWith('typedoc-clarity-theme-')))[0]
+    //await run(`tar zxvf ${tgz}`, p('tmp'))
+    //await create(p('tmp/node_modules'))
+    //await copy(p('tmp/package'), p('tmp/node_modules/typedoc-clarity-theme'))
 
     await copy(p('../src'), p('tmp/src'))
     await copy(p('../tsconfig.json'), p('tmp/tsconfig.json'))
@@ -23,11 +23,11 @@ async function build() {
     //await copy(p('package.json'), p('tmp/node_modules/waves-transactions/package.json'))
     //await remove(p('tmp/dist'))
     //await run('ts-node usage/index.ts', p('tmp'))
-    await run('typedoc', p('tmp'))
+    //await run('typedoc', p('tmp'))
     await copy(p('package.json'), p('tmp/dist/package.json'))
     await copy(p('../README.md'), p('tmp/dist/README.md'))
     await copy(p('tmp/dist'), p('../dist'))
-    await copy(p('tmp/docs'), p('../docs'))
+    //await copy(p('tmp/docs'), p('../docs'))
     await remove(p('tmp'))
 
     const ver = await npmGetVersion('@waves/waves-games')

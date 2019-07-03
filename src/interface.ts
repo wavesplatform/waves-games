@@ -1,55 +1,58 @@
 import { IOrder, ICancelOrder, IIssueTransaction, WithId, IDataTransaction } from '@waves/waves-transactions'
+import { ICreateItemParamsV1, IItemV1, IDataPayloadV1 } from './v1'
+import { Versions } from './versions'
 
-export type TItemMisc = Record<string, number | string | object>
-
-export type TCreateItemParams = {
-  version: number
-  name: string
-  imageUrl: string
-  quantity: number
-  misc: TItemMisc
+export interface IItemMap {
+  1: IItemV1
+  //2: IIItemV2
 }
 
-export type TItem = {
-  id: string
-  gameId: string
-  name: string
-  imageUrl: string
-  quantity: number
-  misc: TItemMisc
-  created: number
+export type TItem = IItemV1 //| IItemV2
+
+export interface IDataPayloadMap {
+  1: IDataPayloadV1
+  //2: IDataPayloadV2
 }
 
-export type TItemOrder = {
+export type TDataPayload = IDataPayloadV1 //|IDataPayloadV2
+
+export interface IParamMap {
+  1: ICreateItemParamsV1
+  //2: ICreateItemParamsV2
+}
+
+export interface IUserInventory {
+  items: { balance: number; item: TItem }[]
+}
+
+export interface IItemOrder {
   id: string
   type: 'buy' | 'sell'
   price: number
   item: TItem
 }
 
-export type TIntent<T, TEntries> = {
+export interface IIntent<T, TEntries> {
   entries(seed: string): TEntries
   result(seed: string): T
   broadcast(seed: string): Promise<T>
   //keeper(): Promise<T>
 }
 
-export type TItarableIntent<T, TEntries> = {
-  entries(seed: string): TEntries
-  broadcast(seed: string): AsyncIterableIterator<T>
-}
+export type TIssue = IIssueTransaction & WithId & { sender: string }
+export type TData = IDataTransaction & WithId & { sender: string }
 
-export interface IWavesItems {
+export interface IWavesItemsApi {
   //Forging
-  createItem(params: TCreateItemParams): TIntent<TItem, [IIssueTransaction & WithId, IDataTransaction & WithId]>
+  createItem<V extends Versions>(params: IParamMap[V]): IIntent<IItemMap[V], [TIssue, TData]>
 
   //Items and catalog
-  getUserItems(gameId: string, address: string): Promise<TItem[]>
+  getUserInventory(gameId: string, address: string): Promise<IUserInventory>
   getItemCatalog(gameId: string): Promise<TItem[]>
   getItem(itemId: string): Promise<TItem>
 
-  //Trading 
-  buyItem(itemId: string, price: number): TIntent<TItemOrder, IOrder>
-  sellItem(itemId: string, price: number): TIntent<TItemOrder, IOrder>
-  cancelOrder(order: TItemOrder): TIntent<{}, ICancelOrder>
+  //Trading
+  buyItem(itemId: string, price: number): IIntent<IItemOrder, IOrder>
+  sellItem(itemId: string, price: number): IIntent<IItemOrder, IOrder>
+  cancelOrder(order: IItemOrder): IIntent<{}, ICancelOrder>
 }

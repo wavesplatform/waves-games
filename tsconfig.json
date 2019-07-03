@@ -1,44 +1,22 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "esnext"
-    ],
-    //"sourceMap": true,
-    "declaration": true,
     "module": "commonjs",
+    "lib": [
+      "esnext",
+    ],
+    "sourceMap": true,
+    "declaration": true,
+    "resolveJsonModule": true,
+    "baseUrl": "./src",
     "outDir": "dist",
     "strict": false,
-    "alwaysStrict": false,
-    "strictNullChecks": false,
-    "noImplicitAny": false,
-    "baseUrl": "./src"
+    "esModuleInterop": true
   },
-  "jsdoc": "dist/jsdoc",
   "include": [
     "src/**/*"
-    //"./declarations/**/*"
   ],
   "exclude": [
-    "node_modules",
-    "dist",
-    "usage",
-    "**/*.spec.ts"
+    "node_modules"
   ],
-  "typedocOptions": {
-    "mode": "file",
-    "out": "docs",
-    "exclude": "test",
-    "theme": "./node_modules/typedoc-clarity-theme",
-    "ignoreCompilerErrors": true,
-    "excludePrivate": true,
-    "excludeNotExported": true,
-    "target": "ES6",
-    "moduleResolution": "node",
-    "preserveConstEnums": true,
-    "stripInternal": true,
-    "suppressExcessPropertyErrors": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "module": "commonjs"
-  }
 }

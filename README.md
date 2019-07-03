@@ -22,6 +22,5 @@ async function howToCreateAnItem(creatorSeed) {
     const items = Items(ChainId.Testnet)
     const request = create(100, true, { version: 1, main: { name: 'The sword of pain', img: 'img_url' }, misc: {} creatorSeed)
     const item = await request.execute()
-   
 }
 ```

@@ -1,12 +1,10 @@
-
 import { readFileSync } from 'fs'
 import { resolve } from 'path'
 import './extensions'
 import { green, end } from './colors'
 import prompt from 'prompts'
 
-
-export const promptOneOf = async <T>(options: { value: T, title: string }[], text: string): Promise<T> => {
+export const promptOneOf = async <T>(options: { value: T; title: string }[], text: string): Promise<T> => {
   const result = await prompt({
     type: 'select',
     name: 'value',
@@ -14,12 +12,10 @@ export const promptOneOf = async <T>(options: { value: T, title: string }[], tex
     choices: options.map(({ value, title }) => ({ value: JSON.stringify(value), title })),
   })
 
-  if (!result.value)
-    throw new Error('Aborted by user.')
+  if (!result.value) throw new Error('Aborted by user.')
 
   return JSON.parse(result.value) as T
 }
-
 
 export const promptForFile = async (text: string, contentValidator?: (content: string) => boolean | string): Promise<string> => {
   const result = await prompt({
@@ -37,8 +33,7 @@ export const promptForFile = async (text: string, contentValidator?: (content: s
     },
   })
 
-  if (!result.value)
-    throw new Error('Aborted by user.')
+  if (!result.value) throw new Error('Aborted by user.')
 
   return readFileSync(resolve(process.cwd(), result.value), { encoding: 'utf8' })
 }
@@ -51,8 +46,7 @@ export const promptForNumber = async (text: string, validate?: (value: number) =
     validate,
   })
 
-  if (!result.value)
-    throw new Error('Aborted by user.')
+  if (!result.value) throw new Error('Aborted by user.')
 
   return result.value
 }
@@ -64,13 +58,12 @@ export const promptForDate = async (text: string, validate?: (date: Date) => boo
     message: text,
   })
 
-  if (!result.value)
-    throw new Error('Aborted by user.')
+  if (!result.value) throw new Error('Aborted by user.')
 
   return result.value
 }
 
-export const promptForString = async (text: string, options?: { regexp: RegExp, errorMessage: string }): Promise<string> => {
+export const promptForString = async (text: string, options?: { regexp: RegExp; errorMessage: string }): Promise<string> => {
   const result = await prompt({
     type: 'text',
     name: 'value',
@@ -90,8 +83,7 @@ export const promptForString = async (text: string, options?: { regexp: RegExp, 
     },
   })
 
-  if (!result.value)
-    throw new Error('Aborted by user.')
+  if (!result.value) throw new Error('Aborted by user.')
 
   return result.value
 }
@@ -106,8 +98,7 @@ export const promptConfirmation = async (text: string): Promise<boolean> => {
     inactive: 'NO',
   })
 
-  if (result.value == undefined)
-    throw new Error('Aborted by user.')
+  if (result.value == undefined) throw new Error('Aborted by user.')
 
   return result.value
 }

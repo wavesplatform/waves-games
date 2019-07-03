@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
-import { wavesItems } from './index'
+import { wavesItemsApi } from './waves-items-api'
 import { promptOneOf, promptForNumber, promptForString, promptForFile, promptConfirmation } from './prompts-generic'
 import { cyan, end } from './colors'
 import { totalFee, formatWaves } from './utils'
-import { urlRegexp } from './generic'
+import { urlRegexp } from './utils'
 import { crypto, ChaidId } from '@waves/waves-crypto'
 import { wavesApi, config, axiosHttp } from '@waves/waves-rest'
 import { Bar, Presets } from 'cli-progress'
@@ -30,22 +30,19 @@ import axios from 'axios'
 //"{ amount: 100, version: 1, name: 'The sword of pain', imageUrl: 'img_url', misc: {}, isLimited: true }" "SECRET_SEED"
 
 const wizard = async (chainId: string) => {
-
   try {
-
     const { address } = crypto()
     const { broadcast } = wavesApi(ChaidId.isMainnet(chainId) ? config.mainnet : config.testnet, axiosHttp(axios))
 
     const name = await promptForString(`Provide an item name ${cyan}(eg. Sword of power)${end}: `)
-    const imageUrl = await promptForString(`Provide an image url ${cyan}(eg. https://cdn.awesomegame.com/img/id)${end}: `,
-      {
-        regexp: urlRegexp,
-        errorMessage: 'Please provide a valid url.',
-      })
+    const imageUrl = await promptForString(`Provide an image url ${cyan}(eg. https://cdn.awesomegame.com/img/id)${end}: `, {
+      regexp: urlRegexp,
+      errorMessage: 'Please provide a valid url.',
+    })
     const quantity = await promptForNumber('Provide quantity: ')
     const seed = await promptForFile(`Please specify seed file path ${cyan}(eg. ./seed.txt)${end}: `)
 
-    const { createItem } = wavesItems(chainId)
+    const { createItem } = wavesItemsApi(chainId)
 
     const intent = createItem({ quantity, name, version: 1, imageUrl, misc: {} })
 
@@ -59,12 +56,15 @@ const wizard = async (chainId: string) => {
   The following item will be created:
   `)
 
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const { printTable } = require('console-table-printer')
     const futureItem = intent.result(seed)
     delete futureItem.gameId
     delete futureItem.created
 
-    const misc = Object.entries(futureItem.misc).map(([k, v]) => `${k} : ${v}`).join('\n')
+    const misc = Object.entries(futureItem.misc)
+      .map(([k, v]) => `${k} : ${v}`)
+      .join('\n')
 
     printTable([{ ...futureItem, misc: misc ? misc : 'none' }])
 
@@ -76,35 +76,25 @@ const wizard = async (chainId: string) => {
       const increaseCount = () => {
         proggress.increment(1)
       }
-      await Promise.all([
-        broadcast(issue).then(increaseCount),
-        broadcast(data).then(increaseCount),
-      ])
+      await Promise.all([broadcast(issue).then(increaseCount), broadcast(data).then(increaseCount)])
       proggress.stop()
       console.log('Item creation successful.')
     } else {
       console.log('Item creation cancelled.')
     }
-
   } catch (ex) {
     console.log(ex)
   }
-
 }
 
 const main = async () => {
   try {
+    const chainId = await promptOneOf([{ value: 'W', title: '1. MAIN NET' }, { value: 'T', title: '2. TEST NET' }], 'Please choose the environment:')
 
-    const chainId = await promptOneOf([
-      { value: 'W', title: '1. MAIN NET' },
-      { value: 'T', title: '2. TEST NET' },
-    ], 'Please choose the environment:')
-
-    const value = await promptOneOf([
-      { value: 1, title: '1. Create item wizard' },
-      { value: 2, title: '2. Create item CLI' },
-      { value: 3, title: '3. File batch item creation' },
-    ], 'Please select one of the following options:')
+    const value = await promptOneOf(
+      [{ value: 1, title: '1. Create item wizard' }, { value: 2, title: '2. Create item CLI' }, { value: 3, title: '3. File batch item creation' }],
+      'Please select one of the following options:',
+    )
 
     switch (value) {
       case 1:
@@ -113,9 +103,7 @@ const main = async () => {
       default:
         console.log('The option is not awailable yet.')
     }
-
-  }
-  catch (ex) {
+  } catch (ex) {
     console.log(ex)
   }
 }
