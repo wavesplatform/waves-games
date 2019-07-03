@@ -1,7 +1,7 @@
 {
   "name": "@waves/waves-games",
   "version": "1.0.2",
-  "description": "Create and deliver game assets through Waves Platform",
+  "description": "Create and deliver game assets through Waves Platform.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {

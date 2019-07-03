@@ -1,4 +1,14 @@
-import { IWavesItemsApi, IIntent, IItemOrder, TItem, IParamMap, IItemMap, TIssue, TData, IUserInventory } from './interface'
+import {
+  IWavesItemsApi,
+  IIntent,
+  IItemOrder,
+  TItem,
+  IParamMap,
+  IItemMap,
+  TIssue,
+  TData,
+  IUserInventory,
+} from './interface'
 import { issue, data, order, cancelOrder, IOrder, ICancelOrder } from '@waves/waves-transactions'
 import { TChainId, crypto, ChaidId } from '@waves/waves-crypto'
 import { wavesApi, config, axiosHttp } from '@waves/waves-rest'
@@ -16,7 +26,16 @@ export const wavesItemsApi = (chainId: TChainId): IWavesItemsApi => {
 
   const cfg = ChaidId.isMainnet(chainId) ? config.mainnet : config.testnet
 
-  const { broadcast, getIssueTxs, getKeyValuePairs, getAssetsBalance, getAssetInfo, getValueByKey, placeOrder, cancelOrder: cancelOrderApi } = wavesApi(cfg, axiosHttp(axios))
+  const {
+    broadcast,
+    getIssueTxs,
+    getKeyValuePairs,
+    getAssetsBalance,
+    getAssetInfo,
+    getValueByKey,
+    placeOrder,
+    cancelOrder: cancelOrderApi,
+  } = wavesApi(cfg, axiosHttp(axios))
 
   const createItem = <V extends Versions>(params: IParamMap[V]): IIntent<IItemMap[V], [TIssue, TData]> => {
     const txs = memoizee((seed: string): [TIssue, TData] => {
@@ -34,7 +53,10 @@ export const wavesItemsApi = (chainId: TChainId): IWavesItemsApi => {
 
           const i = {
             sender: address(seed, chainId),
-            ...issue({ quantity: params.quantity, reissuable: false, chainId, decimals: 0, name: 'ITEM', description: '' }, seed),
+            ...issue(
+              { quantity: params.quantity, reissuable: false, chainId, decimals: 0, name: 'ITEM', description: '' },
+              seed,
+            ),
           }
 
           const d = {
@@ -100,7 +122,9 @@ export const wavesItemsApi = (chainId: TChainId): IWavesItemsApi => {
   const getUserInventory = async (gameId: string, address: string): Promise<IUserInventory> => {
     const { balances } = await getAssetsBalance(address)
     const i = (await getItemCatalog(gameId)).toRecord(x => x.id)
-    const items = balances.filter(({ assetId }) => i[assetId]).map(({ balance, assetId }) => ({ balance: toInt(balance), item: i[assetId] }))
+    const items = balances
+      .filter(({ assetId }) => i[assetId])
+      .map(({ balance, assetId }) => ({ balance: toInt(balance), item: i[assetId] }))
     return { items }
   }
 

@@ -17,7 +17,10 @@ export const promptOneOf = async <T>(options: { value: T; title: string }[], tex
   return JSON.parse(result.value) as T
 }
 
-export const promptForFile = async (text: string, contentValidator?: (content: string) => boolean | string): Promise<string> => {
+export const promptForFile = async (
+  text: string,
+  contentValidator?: (content: string) => boolean | string,
+): Promise<string> => {
   const result = await prompt({
     type: 'text',
     name: 'value',
@@ -38,7 +41,10 @@ export const promptForFile = async (text: string, contentValidator?: (content: s
   return readFileSync(resolve(process.cwd(), result.value), { encoding: 'utf8' })
 }
 
-export const promptForNumber = async (text: string, validate?: (value: number) => boolean | string): Promise<number> => {
+export const promptForNumber = async (
+  text: string,
+  validate?: (value: number) => boolean | string,
+): Promise<number> => {
   const result = await prompt({
     type: 'number',
     name: 'value',
@@ -63,7 +69,10 @@ export const promptForDate = async (text: string, validate?: (date: Date) => boo
   return result.value
 }
 
-export const promptForString = async (text: string, options?: { regexp: RegExp; errorMessage: string }): Promise<string> => {
+export const promptForString = async (
+  text: string,
+  options?: { regexp: RegExp; errorMessage: string },
+): Promise<string> => {
   const result = await prompt({
     type: 'text',
     name: 'value',
