@@ -13,7 +13,7 @@ module.exports = {
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/prefer-interface": "off",
-
+    "@typescript-eslint/explicit-member-accessibility": "off",
   },
   parserOptions: {
     ecmaVersion: 2018,  // Allows for the parsing of modern ECMAScript features

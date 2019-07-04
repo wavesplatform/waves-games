@@ -32,11 +32,16 @@ export interface IItemOrder {
   item: TItem
 }
 
-export interface IIntent<T, TEntries> {
-  entries(seed: string): TEntries
-  result(seed: string): T
-  broadcast(seed: string): Promise<T>
-  //keeper(): Promise<T>
+export interface IPreview<T> {
+  preview(seed?: string): Promise<T>
+}
+
+export interface IEntries<T> {
+  entries(seed?: string): Promise<T>
+}
+
+export interface IBroadcast<T> {
+  broadcast(seed?: string): Promise<T>
 }
 
 export type TIssue = IIssueTransaction & WithId & { sender: string }
@@ -44,7 +49,9 @@ export type TData = IDataTransaction & WithId & { sender: string }
 
 export interface IWavesItemsApi {
   //Forging
-  createItem<V extends Versions>(params: IParamMap[V]): IIntent<IItemMap[V], [TIssue, TData]>
+  createItem<V extends Versions>(
+    params: IParamMap[V],
+  ): IPreview<IItemMap[V]> & IEntries<[TIssue, TData]> & IBroadcast<IItemMap[V]>
 
   //Items and catalog
   getUserInventory(gameId: string, address: string): Promise<IUserInventory>
@@ -52,7 +59,7 @@ export interface IWavesItemsApi {
   getItem(itemId: string): Promise<TItem>
 
   //Trading
-  buyItem(itemId: string, price: number): IIntent<IItemOrder, IOrder>
-  sellItem(itemId: string, price: number): IIntent<IItemOrder, IOrder>
-  cancelOrder(order: IItemOrder): IIntent<{}, ICancelOrder>
+  buyItem(itemId: string, price: number): IEntries<IOrder> & IBroadcast<IItemOrder>
+  sellItem(itemId: string, price: number): IEntries<IOrder> & IBroadcast<IItemOrder>
+  cancelOrder(order: IItemOrder): IEntries<ICancelOrder> & IBroadcast<void>
 }

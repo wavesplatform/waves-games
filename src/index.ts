@@ -1,7 +1,6 @@
 export {
   IWavesItemsApi,
   IUserInventory,
-  IIntent,
   TItem,
   TDataPayload,
   TData,
@@ -10,6 +9,9 @@ export {
   IItemMap,
   IItemOrder,
   IParamMap,
+  IPreview,
+  IBroadcast,
+  IEntries,
 } from './interface'
 export { Versions } from './versions'
 export { wavesItemsApi } from './waves-items-api'

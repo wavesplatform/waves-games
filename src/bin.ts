@@ -49,7 +49,7 @@ const wizard = async (chainId: string) => {
 
     const intent = createItem({ quantity, name, version: 1, imageUrl, misc: {} })
 
-    const [issue, data] = intent.entries(seed)
+    const [issue, data] = await intent.entries(seed)
 
     console.log(`
   You are about to broadcast ${cyan}2 transactions${end} to ${cyan}${chainId === 'W' ? 'MAINNET' : 'TESTNET'}${end}
@@ -61,7 +61,7 @@ const wizard = async (chainId: string) => {
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const { printTable } = require('console-table-printer')
-    const futureItem = intent.result(seed)
+    const futureItem = await intent.preview(seed)
     delete futureItem.gameId
     delete futureItem.created
 
