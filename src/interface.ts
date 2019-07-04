@@ -1,5 +1,5 @@
 import { IOrder, ICancelOrder, IIssueTransaction, WithId, IDataTransaction } from '@waves/waves-transactions'
-import { ICreateItemParamsV1, IItemV1, IDataPayloadV1 } from './v1'
+import { ICreateItemParamsV1, IItemV1, IDataPayloadV1, IEditItemParamsV1 } from './v1'
 import { Versions } from './versions'
 
 export interface IItemMap {
@@ -16,9 +16,14 @@ export interface IDataPayloadMap {
 
 export type TDataPayload = IDataPayloadV1 //|IDataPayloadV2
 
-export interface IParamMap {
+export interface ICreateParamsMap {
   1: ICreateItemParamsV1
   //2: ICreateItemParamsV2
+}
+
+export interface IEditParamsMap {
+  1: IEditItemParamsV1
+  //2: IEditItemParamsV2
 }
 
 export interface IUserInventory {
@@ -50,8 +55,12 @@ export type TData = IDataTransaction & WithId & { sender: string }
 export interface IWavesItemsApi {
   //Forging
   createItem<V extends Versions>(
-    params: IParamMap[V],
+    params: ICreateParamsMap[V],
   ): IPreview<IItemMap[V]> & IEntries<[TIssue, TData]> & IBroadcast<IItemMap[V]>
+  //Editing
+  editItem<V extends Versions>(
+    params: IEditParamsMap[V],
+  ): IPreview<IItemMap[V]> & IEntries<[TData]> & IBroadcast<IItemMap[V]>
 
   //Items and catalog
   getUserInventory(gameId: string, address: string): Promise<IUserInventory>

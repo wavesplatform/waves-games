@@ -24,12 +24,14 @@
     "ncp": "^2.0.0",
     "preprocess": "^3.1.0",
     "prettier": "^1.18.2",
-    "ts-node": "^7.0.1",
-    "typescript": "^3.2.2"
+    "ts-node": "^7.0.1"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/wavesplatform/waves-games.git"
+  },
+  "peerDependencies": {
+    "typescript": "^3.2.2"
   },
   "dependencies": {
     "@waves/waves-crypto": "^3.0.14",
@@ -40,17 +42,5 @@
     "console-table-printer": "^1.0.0-beta17",
     "promise-memoize": "^1.2.1",
     "prompts": "^2.1.0"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
-    "rootDir": "src",
-    "testRegex": ".spec.ts$",
-    "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
-    }
   }
 }

@@ -1,13 +1,23 @@
 import { wavesItemsApi, parseDataPayload } from '../src/index'
-const seed = '9e0fa09dcc6e40ae95f5d8e6795c76c5fb97507be9ff40d9b6f58df27c171e53'
+const seed = 'my secret seed'
 
 async function createItem() {
   const items = wavesItemsApi('T')
-  const request = items.createItem({ version: 1, quantity: 100, name: 'The sword of pain', imageUrl: 'http://ya.ru' })
-  const item = await request.broadcast(seed)
+  const item = await items
+    .createItem({
+      version: 1,
+      quantity: 100,
+      name: 'The sword of pain',
+      imageUrl: 'https://i.pinimg.com/originals/02/c0/46/02c046b9ec76ebb3061515df8cb9f118.jpg',
+      misc: {
+        damage: 22,
+        power: 13,
+      },
+    })
+    .broadcast(seed)
   console.log(item)
 }
-//createItem()
+createItem()
 
 async function getItem() {
   const items = wavesItemsApi('T')
@@ -39,4 +49,4 @@ async function parsePayload() {
   )
   console.log(version, data)
 }
-parsePayload()
+//parsePayload()

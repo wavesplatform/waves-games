@@ -17,6 +17,7 @@ export const signWithKeeper = async (txs: TTx[]): Promise<TTx[]> => {
       type: x.type.valueOf(),
       data: {
         ...x,
+        precision: x.decimals || x.decimals === 0 ? x.decimals : undefined,
         fee: { assetId: 'WAVES', coins: x.fee },
         amount: x['amount'] ? { assetId: 'WAVES', coins: x['amount'] } : undefined,
       },

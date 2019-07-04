@@ -2,7 +2,8 @@ import {
   IWavesItemsApi,
   IItemOrder,
   TItem,
-  IParamMap,
+  ICreateParamsMap,
+  IEditParamsMap,
   IItemMap,
   TIssue,
   TData,
@@ -12,7 +13,7 @@ import {
   IBroadcast,
 } from './interface'
 import { order, cancelOrder, IOrder, ICancelOrder } from '@waves/waves-transactions'
-import { TChainId, ChaidId } from '@waves/waves-crypto'
+import { TChainId, ChaidId, publicKey } from '@waves/waves-crypto'
 import { wavesApi, config, axiosHttp } from '@waves/waves-rest'
 import './extensions'
 import axios from 'axios'
@@ -21,8 +22,10 @@ import { IItemV1 } from './v1'
 import { parseItem } from './parse-item'
 import { Versions } from './versions'
 import { toInt } from './utils'
-import { signWithKeeper } from 'keeper'
-import { txsForItemCreate } from 'txs-for-item-create'
+import { signWithKeeper } from './keeper'
+import { txsForItemCreate, txsForItemEdit } from './txs-for-item'
+
+declare const WavesKeeper: any
 
 export const wavesItemsApi = (chainId: TChainId): IWavesItemsApi => {
   const cfg = ChaidId.isMainnet(chainId) ? config.mainnet : config.testnet
@@ -39,11 +42,17 @@ export const wavesItemsApi = (chainId: TChainId): IWavesItemsApi => {
   } = wavesApi(cfg, axiosHttp(axios))
 
   const createItem = <V extends Versions>(
-    params: IParamMap[V],
+    params: ICreateParamsMap[V],
   ): IPreview<IItemMap[V]> & IEntries<[TIssue, TData]> & IBroadcast<IItemMap[V]> => {
     const txs = memoizee(
       async (seed?: string): Promise<[TIssue, TData]> => {
-        const txs = txsForItemCreate(params, chainId, seed)
+        seed = seed ? seed : ''
+        let senderPublicKey = publicKey(seed)
+        if (!seed) {
+          senderPublicKey = (await WavesKeeper.publicState()).account.publicKey
+        }
+        const txs = txsForItemCreate(params, chainId, senderPublicKey, seed)
+
         if (!seed) {
           return (await signWithKeeper(txs)) as [TIssue, TData]
         }
@@ -62,6 +71,42 @@ export const wavesItemsApi = (chainId: TChainId): IWavesItemsApi => {
       broadcast: async (seed?: string): Promise<IItemV1> => {
         const [issue, data] = await txs(seed)
         await Promise.all([broadcast(issue), broadcast(data)])
+        return preview(seed)
+      },
+    }
+  }
+
+  const editItem = <V extends Versions>(
+    params: IEditParamsMap[V],
+  ): IPreview<IItemMap[V]> & IEntries<[TData]> & IBroadcast<IItemMap[V]> => {
+    const txs = memoizee(
+      async (seed?: string): Promise<[TData]> => {
+        seed = seed ? seed : ''
+        let senderPublicKey = publicKey(seed)
+        if (!seed) {
+          senderPublicKey = (await WavesKeeper.publicState()).account.publicKey
+        }
+        const txs = txsForItemEdit(params, chainId, senderPublicKey, seed)
+
+        if (!seed) {
+          return (await signWithKeeper(txs)) as [TData]
+        }
+        return txs
+      },
+    )
+
+    const preview = async (seed?: string): Promise<IItemMap[V]> => {
+      const [data] = await txs(seed)
+      const info = await getAssetInfo(params.itemId)
+      return parseItem(info, data)
+    }
+
+    return {
+      entries: txs,
+      preview,
+      broadcast: async (seed?: string): Promise<IItemV1> => {
+        const [issue] = await txs(seed)
+        await Promise.all([broadcast(issue)])
         return preview(seed)
       },
     }
@@ -168,6 +213,7 @@ export const wavesItemsApi = (chainId: TChainId): IWavesItemsApi => {
 
   return {
     createItem,
+    editItem,
     getItem,
     getUserInventory,
     getItemCatalog,
