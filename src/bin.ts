@@ -78,8 +78,6 @@ const wizard = async (chainId: string) => {
 
     printTable([{ ...futureItem, misc: misc ? misc : 'none' }])
 
-    spinner('%s Broadcasting transactions to blockchain...')
-
     if (await promptConfirmation('Do you want to proceed?')) {
       await withSpinner('Broadcasting transactions to blockchain', Promise.all([broadcast(issue), broadcast(data)]))
       console.log('Item creation successful.')
@@ -87,7 +85,7 @@ const wizard = async (chainId: string) => {
       console.log('Item creation cancelled.')
     }
   } catch (ex) {
-    console.log(ex)
+    throw new Error(ex.message)
   }
 }
 

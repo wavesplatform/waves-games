@@ -69,6 +69,7 @@ export const txsForItemV1Create = (
         name: 'ITEM',
         description: '',
         senderPublicKey,
+        fee: params.quantity === 1 ? 1000 : undefined,
       },
       seed,
     ),

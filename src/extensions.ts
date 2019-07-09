@@ -16,11 +16,11 @@ interface Array<T> {
   minMaxIndex(map: (item: T) => number): { min: number; max: number }
   minIndex(map: (item: T) => number): number
   maxIndex(map: (item: T) => number): number
-  any(predicate: (item: T) => boolean): boolean
+  any(predicate?: (item: T) => boolean): boolean
   orderBy(orderProp: (item: T) => keyof T): T[]
 }
 
-Array.prototype.tryMapOrUndefined = function<T, TOut>(map: (item: T) => TOut) {
+Array.prototype.tryMapOrUndefined = function<T, TOut>(this: T[], map: (item: T) => TOut) {
   return this.map((x: T) => {
     try {
       return map(x)
@@ -30,18 +30,18 @@ Array.prototype.tryMapOrUndefined = function<T, TOut>(map: (item: T) => TOut) {
   })
 }
 
-Array.prototype.any = function<T>(predicate: (item: T) => boolean) {
+Array.prototype.any = function<T>(this: T[], predicate?: (item: T) => boolean) {
   for (let i = 0; i < this.length; i++) {
-    if (predicate(this[i])) return true
+    if (!predicate || predicate(this[i])) return true
   }
   return false
 }
 
-Array.prototype.toRecord = function<T>(map: (item: T) => string) {
-  return this.reduce((a: any, b: T) => ({ ...a, [map(b)]: b }), {})
+Array.prototype.toRecord = function<T>(this: T[], map: (item: T) => string) {
+  return this.reduce((a, b) => ({ ...a, [map(b)]: b }), {})
 }
 
-Array.prototype.firstOrUndefined = function() {
+Array.prototype.firstOrUndefined = function<T>(this: T[]) {
   return this.length > 0 ? this[0] : undefined
 }
 
