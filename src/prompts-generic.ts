@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs'
 import { resolve } from 'path'
 import './extensions'
-import { green, end } from './colors'
+import { green, end, cyan } from './colors'
 import prompt from 'prompts'
 
 export const promptOneOf = async <T>(options: { value: T; title: string }[], text: string): Promise<T> => {
@@ -129,4 +129,12 @@ export const spinner = (text: string, done?: string) => {
       }
     },
   }
+}
+
+export const withSpinner = <T>(text: string, promise: Promise<T>): Promise<T> => {
+  const { stop } = spinner(`%s ${text} ...`, `${green}✔${end} ${text} ${cyan}(DONE)${end}`)
+  return promise.then(x => {
+    stop()
+    return x
+  })
 }

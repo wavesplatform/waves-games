@@ -1,13 +1,20 @@
 #!/usr/bin/env node
 
 import { wavesItemsApi } from './waves-items-api'
-import { promptOneOf, promptForNumber, promptForString, promptForFile, promptConfirmation } from './prompts-generic'
-import { cyan, end } from './colors'
+import {
+  promptOneOf,
+  promptForNumber,
+  promptForString,
+  promptForFile,
+  promptConfirmation,
+  spinner,
+  withSpinner,
+} from './prompts-generic'
+import { cyan, end, red } from './colors'
 import { totalFee, formatWaves } from './utils'
 import { urlRegexp } from './utils'
 import { crypto, ChaidId } from '@waves/waves-crypto'
 import { wavesApi, config, axiosHttp } from '@waves/waves-rest'
-import { Bar, Presets } from 'cli-progress'
 import axios from 'axios'
 
 // program
@@ -71,16 +78,10 @@ const wizard = async (chainId: string) => {
 
     printTable([{ ...futureItem, misc: misc ? misc : 'none' }])
 
-    if (await promptConfirmation('Do you want to proceed?')) {
-      console.log('\nBroadcasting transactions to blockchain...')
+    spinner('%s Broadcasting transactions to blockchain...')
 
-      const proggress = new Bar({}, Presets.rect)
-      proggress.start([issue, data].length, 0)
-      const increaseCount = () => {
-        proggress.increment(1)
-      }
-      await Promise.all([broadcast(issue).then(increaseCount), broadcast(data).then(increaseCount)])
-      proggress.stop()
+    if (await promptConfirmation('Do you want to proceed?')) {
+      await withSpinner('Broadcasting transactions to blockchain', Promise.all([broadcast(issue), broadcast(data)]))
       console.log('Item creation successful.')
     } else {
       console.log('Item creation cancelled.')
@@ -114,7 +115,7 @@ const main = async () => {
         console.log('The option is not awailable yet.')
     }
   } catch (ex) {
-    console.log(ex)
+    console.log(`${red}${ex.message}${end}`)
   }
 }
 

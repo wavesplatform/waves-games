@@ -92,7 +92,7 @@ npm i @waves/waves-games
 
 #### Create an item
 ```ts
-import { wavesItemsApi } from '@waves/waves-transactions'
+import { wavesItemsApi } from '@waves/waves-games'
 const seed = 'my secret backend seed'
 
 async function createItem() {
