@@ -180,7 +180,7 @@ export const wavesItemsApi = (chainId: TChainId): IWavesItemsApi => {
           amount: 1,
           price: price,
           matcherPublicKey: cfg.matcherPublicKey,
-          orderType: 'buy',
+          orderType: 'sell',
           amountAsset: itemId,
           priceAsset: null,
         },
