@@ -17,7 +17,7 @@ async function createItem() {
     .broadcast(seed)
   console.log(item)
 }
-createItem()
+//createItem()
 
 async function getItem() {
   const items = wavesItemsApi('T')
@@ -28,10 +28,10 @@ async function getItem() {
 
 async function getItemList() {
   const items = wavesItemsApi('W')
-  const list = await items.getItemCatalog('3PKEQiRe2u6488jdvUAUYshrM4fQPf4omak')
+  const list = await items.getItemCatalog('3PPox1H84dbiazoB7cCHo3Htjq3hh315YPw')
   console.log(list)
 }
-//getItemList()
+getItemList()
 
 async function getUserInventory() {
   const items = wavesItemsApi('W')

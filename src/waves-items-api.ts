@@ -35,6 +35,7 @@ export const wavesItemsApi = (chainId: TChainId): IWavesItemsApi => {
     getIssueTxs,
     getKeyValuePairs,
     getAssetsBalance,
+
     getAssetInfo,
     getValueByKey,
     placeOrder,
@@ -126,6 +127,7 @@ export const wavesItemsApi = (chainId: TChainId): IWavesItemsApi => {
         try {
           return parseItem(issues[kvp.key], kvp)
         } catch (error) {
+          console.log(error)
           return undefined
         }
       })
