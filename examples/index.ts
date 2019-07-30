@@ -31,17 +31,17 @@ async function getItemList() {
   const list = await items.getItemCatalog('3PPox1H84dbiazoB7cCHo3Htjq3hh315YPw')
   console.log(list)
 }
-getItemList()
+//getItemList()
 
 async function getUserInventory() {
   const items = wavesItemsApi('W')
   const list = await items.getUserInventory(
-    '3PKEQiRe2u6488jdvUAUYshrM4fQPf4omak',
-    '3PKEQiRe2u6488jdvUAUYshrM4fQPf4omak',
+    '3PPox1H84dbiazoB7cCHo3Htjq3hh315YPw',
+    '3PFg2zxzhofWnbGnBpSfTWBqYg69M4CNZtW',
   )
-  console.log(list)
+  console.log(list.items)
 }
-//getUserInventory()
+getUserInventory()
 
 async function parsePayload() {
   const { version, data } = parseDataPayload(

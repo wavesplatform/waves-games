@@ -24,7 +24,6 @@ import { Versions } from './versions'
 import { toInt } from './utils'
 import { signWithKeeper } from './keeper'
 import { txsForItemCreate, txsForItemEdit } from './txs-for-item'
-import { AssetBalance } from '@waves/waves-rest/types'
 
 declare const WavesKeeper: any
 
@@ -128,7 +127,6 @@ export const wavesItemsApi = (chainId: TChainId): IWavesItemsApi => {
         try {
           return parseItem(issues[kvp.key], kvp)
         } catch (error) {
-          console.log(error)
           return undefined
         }
       })
@@ -136,7 +134,7 @@ export const wavesItemsApi = (chainId: TChainId): IWavesItemsApi => {
   }
 
   const getUserInventory = async (gameId: string, address: string): Promise<IUserInventory> => {
-    const [assets, nfts] = await Promise.all([getAssetsBalance(address), getNftBalance(gameId)])
+    const [assets, nfts] = await Promise.all([getAssetsBalance(address), getNftBalance(address)])
 
     const balances = assets.balances
       .map(({ assetId, balance }) => ({ assetId, balance }))
