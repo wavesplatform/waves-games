@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "rm -fr dist && tsc && cp README.md ./dist && cp package.json ./dist",
-    "deploy": "npm run build && cd ./dist && npm version patch && cp package.json ../ && npm run publish",
+    "deploy": "npm run build && cd ./dist && npm version patch && cp package.json ../ && npm publish",
     "test": "jest"
   },
   "bin": {
