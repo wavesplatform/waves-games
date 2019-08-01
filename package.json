@@ -1,12 +1,12 @@
 {
   "name": "@waves/waves-games",
-  "version": "1.0.37",
+  "version": "1.0.39",
   "description": "Create and deliver game assets through Waves Platform.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "rm -fr dist && tsc && cp README.md ./dist && cp package.json ./dist",
-    "prepublishOnly": "npm run build && cd ./dist && npm version patch && cp package.json ../",
+    "deploy": "npm run build && cd ./dist && npm version patch && cp package.json ../ && npm run publish",
     "test": "jest"
   },
   "bin": {
