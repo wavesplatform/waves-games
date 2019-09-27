@@ -1,7 +1,7 @@
 import { IVersion } from '../versions'
 import { TIssue, TData } from '../interface'
 import { parseDataPayload } from '../data-payload'
-import { address, TChainId } from '@waves/waves-crypto'
+import { address, TChainId } from '@waves/ts-lib-crypto'
 import { issue, data } from '@waves/waves-transactions'
 
 export type TItemMiscV1 = Record<string, number | string | boolean>

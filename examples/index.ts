@@ -41,7 +41,7 @@ async function getUserInventory() {
   )
   console.log(list.items)
 }
-getUserInventory()
+//getUserInventory()
 
 async function parsePayload() {
   const { version, data } = parseDataPayload(
@@ -50,3 +50,11 @@ async function parsePayload() {
   console.log(version, data)
 }
 //parsePayload()
+
+async function getAllLots() {
+  const items = wavesItemsApi('T')
+  const list = await items.getAllLots()
+  console.log(list)
+}
+
+getAllLots()

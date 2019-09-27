@@ -1,4 +1,4 @@
-import { IOrder, ICancelOrder, IIssueTransaction, WithId, IDataTransaction } from '@waves/waves-transactions'
+import { IIssueTransaction, WithId, IDataTransaction, IInvokeScriptTransaction } from '@waves/waves-transactions'
 import { ICreateItemParamsV1, IItemV1, IDataPayloadV1, IEditItemParamsV1 } from './v1'
 import { Versions } from './versions'
 
@@ -37,6 +37,15 @@ export interface IItemOrder {
   item: TItem
 }
 
+export interface IItemLot {
+  id: string
+  amountAsset: string
+  priceAsset: string
+  stock: number
+  price: number
+  seller: string
+}
+
 export interface IPreview<T> {
   preview(seed?: string): Promise<T>
 }
@@ -51,6 +60,7 @@ export interface IBroadcast<T> {
 
 export type TIssue = IIssueTransaction & WithId & { sender: string }
 export type TData = IDataTransaction & WithId & { sender: string }
+export type TInvokeScript = IInvokeScriptTransaction & WithId & { sender: string }
 
 export interface IWavesItemsApi {
   //Forging
@@ -68,7 +78,13 @@ export interface IWavesItemsApi {
   getItem(itemId: string): Promise<TItem>
 
   //Trading
-  buyItem(itemId: string, price: number): IEntries<IOrder> & IBroadcast<IItemOrder>
-  sellItem(itemId: string, price: number): IEntries<IOrder> & IBroadcast<IItemOrder>
-  cancelOrder(order: IItemOrder): IEntries<ICancelOrder> & IBroadcast<void>
+  sell(
+    assetId: string,
+    amount: number,
+    priceAsset: string,
+    price: number,
+  ): IEntries<TInvokeScript> & IBroadcast<TInvokeScript>
+  buy(lotId: string, amount: number): IEntries<TInvokeScript> & IBroadcast<TInvokeScript>
+  cancel(lotId: string): IEntries<TInvokeScript> & IBroadcast<TInvokeScript>
+  getAllLots(): Promise<IItemLot[]>
 }

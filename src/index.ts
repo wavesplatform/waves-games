@@ -13,6 +13,7 @@ export {
   IPreview,
   IBroadcast,
   IEntries,
+  IItemLot,
 } from './interface'
 export { Versions } from './versions'
 export { wavesItemsApi } from './waves-items-api'

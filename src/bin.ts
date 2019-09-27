@@ -13,7 +13,7 @@ import {
 import { cyan, end, red } from './colors'
 import { totalFee, formatWaves } from './utils'
 import { urlRegexp } from './utils'
-import { crypto, ChaidId } from '@waves/waves-crypto'
+import { crypto, ChaidId } from '@waves/ts-lib-crypto'
 import { wavesApi, config, axiosHttp } from '@waves/waves-rest'
 import axios from 'axios'
 

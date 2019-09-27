@@ -1,6 +1,6 @@
 import { Versions } from './versions'
 import { ICreateParamsMap, IEditParamsMap, TIssue, TData } from './interface'
-import { TChainId } from '@waves/waves-crypto'
+import { TChainId } from '@waves/ts-lib-crypto'
 import { txsForItemV1Create, txsForItemV1Edit } from './v1'
 
 export const txsForItemCreate = <V extends Versions>(

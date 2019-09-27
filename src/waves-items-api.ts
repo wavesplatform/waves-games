@@ -1,6 +1,5 @@
 import {
   IWavesItemsApi,
-  IItemOrder,
   TItem,
   ICreateParamsMap,
   IEditParamsMap,
@@ -11,9 +10,10 @@ import {
   IPreview,
   IEntries,
   IBroadcast,
+  TInvokeScript,
+  IItemLot,
 } from './interface'
-import { order, cancelOrder, IOrder, ICancelOrder } from '@waves/waves-transactions'
-import { TChainId, ChaidId, publicKey } from '@waves/waves-crypto'
+import { TChainId, ChaidId, publicKey, base58Decode, base64Encode, address, base64Decode } from '@waves/ts-lib-crypto'
 import { wavesApi, config, axiosHttp } from '@waves/waves-rest'
 import './extensions'
 import axios from 'axios'
@@ -24,11 +24,19 @@ import { Versions } from './versions'
 import { toInt } from './utils'
 import { signWithKeeper } from './keeper'
 import { txsForItemCreate, txsForItemEdit } from './txs-for-item'
+import { invokeScript } from '@waves/waves-transactions'
+import { base58Encode } from '@waves/ts-lib-crypto'
+import BigNumber from '@waves/bignumber'
 
 declare const WavesKeeper: any
 
-export const wavesItemsApi = (chainId: TChainId): IWavesItemsApi => {
+const wavesAssetId = '11111111111111111111111111111111'
+
+export const wavesItemsApi = (chainId: TChainId, dApp?: string): IWavesItemsApi => {
   const cfg = ChaidId.isMainnet(chainId) ? config.mainnet : config.testnet
+
+  dApp =
+    dApp || (ChaidId.isMainnet(chainId) ? '3PJYvHqNcUsfQyPkvVCYMqYsi1xZKLmKT6k' : '3MrDcz4LFFjPhXdtu7YCqFSnHc3pD1tcWLa')
 
   const {
     broadcast,
@@ -38,8 +46,6 @@ export const wavesItemsApi = (chainId: TChainId): IWavesItemsApi => {
     getNftBalance,
     getAssetInfo,
     getValueByKey,
-    placeOrder,
-    cancelOrder: cancelOrderApi,
   } = wavesApi(cfg, axiosHttp(axios))
 
   const createItem = <V extends Versions>(
@@ -85,6 +91,7 @@ export const wavesItemsApi = (chainId: TChainId): IWavesItemsApi => {
         seed = seed ? seed : ''
         let senderPublicKey = publicKey(seed)
         if (!seed) {
+          //TODO: remove this
           senderPublicKey = (await WavesKeeper.publicState()).account.publicKey
         }
         const txs = txsForItemEdit(params, chainId, senderPublicKey, seed)
@@ -154,67 +161,173 @@ export const wavesItemsApi = (chainId: TChainId): IWavesItemsApi => {
     return parseItem(info, { key: info.assetId, value, type: 'string' })
   }
 
-  const buyItem = (itemId: string, price: number): IEntries<IOrder> & IBroadcast<IItemOrder> => {
-    const entries = async (seed: string) =>
-      order(
-        {
-          amount: 1,
-          price: price,
-          matcherPublicKey: cfg.matcherPublicKey,
-          orderType: 'buy',
-          amountAsset: itemId,
-          priceAsset: null,
-        },
-        seed,
-      )
+  const sell = (
+    assetId: string,
+    amount: number,
+    priceAsset: string,
+    price: number,
+  ): IEntries<TInvokeScript> & IBroadcast<TInvokeScript> => {
+    const entries = memoizee(
+      async (seed?: string): Promise<TInvokeScript> => {
+        seed = seed ? seed : ''
+        let senderPublicKey = publicKey(seed)
+        if (!seed) {
+          //TODO: remove this
+          senderPublicKey = (await WavesKeeper.publicState()).account.publicKey
+        }
+
+        if (!priceAsset || 'WAVES') priceAsset = wavesAssetId
+
+        const tx = invokeScript(
+          {
+            call: {
+              function: 'sell',
+              args: [
+                {
+                  type: 'integer',
+                  value: price,
+                },
+                {
+                  type: 'binary',
+                  value: 'base64:' + base64Encode(base58Decode(priceAsset)),
+                },
+              ],
+            },
+            dApp,
+            payment: [{ amount, assetId }],
+            chainId: cfg.chainId,
+          },
+          seed,
+        )
+
+        if (!seed) {
+          return ((await signWithKeeper([tx])) as [TInvokeScript])[0]
+        }
+        return { sender: address({ publicKey: senderPublicKey }, chainId), ...tx }
+      },
+    )
 
     return {
       entries,
-      broadcast: async (seed: string): Promise<IItemOrder> => {
-        const o = await entries(seed)
-        const item = await getItem(itemId)
-        const { id } = await placeOrder(o)
-        return { id, price, item, type: 'buy' }
+      broadcast: async (seed?: string): Promise<TInvokeScript> => {
+        const tx = await entries(seed)
+        await broadcast(tx)
+        return tx
       },
     }
   }
 
-  const sellItem = (itemId: string, price: number): IEntries<IOrder> & IBroadcast<IItemOrder> => {
-    const entries = async (seed: string) =>
-      order(
-        {
-          amount: 1,
-          price: price,
-          matcherPublicKey: cfg.matcherPublicKey,
-          orderType: 'sell',
-          amountAsset: itemId,
-          priceAsset: null,
-        },
-        seed,
-      )
+  const buy = (lotId: string, amount: number): IEntries<TInvokeScript> & IBroadcast<TInvokeScript> => {
+    const entries = memoizee(
+      async (seed?: string): Promise<TInvokeScript> => {
+        seed = seed ? seed : ''
+        let senderPublicKey = publicKey(seed)
+        if (!seed) {
+          //TODO: remove this
+          senderPublicKey = (await WavesKeeper.publicState()).account.publicKey
+        }
+
+        const { value } = await getValueByKey(dApp, lotId)
+        const bytes = base64Decode(value.replace('base64:', ''))
+        const price = BigNumber.fromBytes(bytes.slice(0, 8)).toNumber()
+        const assetId = base58Encode(bytes.slice(8 + 8, 8 + 8 + 32))
+
+        const tx = invokeScript(
+          {
+            call: {
+              function: 'buy',
+              args: [
+                {
+                  type: 'string',
+                  value: lotId,
+                },
+                {
+                  type: 'integer',
+                  value: amount,
+                },
+              ],
+            },
+            dApp,
+            payment: [{ amount: price * amount, assetId: assetId === wavesAssetId ? null : assetId }],
+            chainId: cfg.chainId,
+          },
+          seed,
+        )
+
+        if (!seed) {
+          return ((await signWithKeeper([tx])) as [TInvokeScript])[0]
+        }
+        return { sender: address({ publicKey: senderPublicKey }, chainId), ...tx }
+      },
+    )
 
     return {
       entries,
-      broadcast: async (seed: string): Promise<IItemOrder> => {
-        const o = await entries(seed)
-        const item = await getItem(itemId)
-        const { id } = await placeOrder(o)
-
-        return { id, price, item, type: 'sell' }
+      broadcast: async (seed?: string): Promise<TInvokeScript> => {
+        const tx = await entries(seed)
+        await broadcast(tx)
+        return tx
       },
     }
   }
 
-  const _cancelOrder = (order: IItemOrder): IEntries<ICancelOrder> & IBroadcast<void> => {
-    const entries = async (seed: string) => cancelOrder({ orderId: order.id }, seed)
+  const cancel = (lotId: string): IEntries<TInvokeScript> & IBroadcast<TInvokeScript> => {
+    const entries = memoizee(
+      async (seed?: string): Promise<TInvokeScript> => {
+        seed = seed ? seed : ''
+        let senderPublicKey = publicKey(seed)
+        if (!seed) {
+          //TODO: remove this
+          senderPublicKey = (await WavesKeeper.publicState()).account.publicKey
+        }
+
+        const tx = invokeScript(
+          {
+            call: {
+              function: 'cancel',
+              args: [
+                {
+                  type: 'string',
+                  value: lotId,
+                },
+              ],
+            },
+            dApp,
+            payment: [],
+            chainId: cfg.chainId,
+          },
+          seed,
+        )
+
+        if (!seed) {
+          return ((await signWithKeeper([tx])) as [TInvokeScript])[0]
+        }
+        return { sender: address({ publicKey: senderPublicKey }, chainId), ...tx }
+      },
+    )
 
     return {
       entries,
-      broadcast: async (seed: string) => {
-        const o = await entries(seed)
-        return await cancelOrderApi(order.item.id, 'WAVES', o)
+      broadcast: async (seed?: string): Promise<TInvokeScript> => {
+        const tx = await entries(seed)
+        await broadcast(tx)
+        return tx
       },
     }
+  }
+
+  const getAllLots = async (): Promise<IItemLot[]> => {
+    const pairs = await getKeyValuePairs(dApp)
+    return pairs.map(({ key, value }) => {
+      const bytes = base64Decode(value.replace('base64:', ''))
+      const price = BigNumber.fromBytes(bytes.slice(0, 8)).toNumber()
+      const stock = BigNumber.fromBytes(bytes.slice(8, 8 + 8)).toNumber()
+      const assetId = base58Encode(bytes.slice(8 + 8, 8 + 8 + 32))
+      const priceAsset = assetId === wavesAssetId ? 'WAVES' : assetId
+      const amountAsset = base58Encode(bytes.slice(8 + 8 + 32, 8 + 8 + 32 + 32))
+      const seller = address({ publicKey: bytes.slice(8 + 8 + 32 + 32, 8 + 8 + 32 + 32 + 32) }, chainId)
+      return { id: key, price, stock, priceAsset, amountAsset, seller }
+    })
   }
 
   return {
@@ -223,8 +336,9 @@ export const wavesItemsApi = (chainId: TChainId): IWavesItemsApi => {
     getItem,
     getUserInventory,
     getItemCatalog,
-    buyItem,
-    sellItem,
-    cancelOrder: _cancelOrder,
+    sell,
+    buy,
+    cancel,
+    getAllLots,
   }
 }

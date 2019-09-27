@@ -18,6 +18,7 @@ interface Array<T> {
   maxIndex(map: (item: T) => number): number
   any(predicate?: (item: T) => boolean): boolean
   orderBy(orderProp: (item: T) => keyof T): T[]
+  groupBy<K extends keyof any>(groupByKey: (item: T) => K): Record<K, T[]>
 }
 
 Array.prototype.tryMapOrUndefined = function<T, TOut>(this: T[], map: (item: T) => TOut) {
