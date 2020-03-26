@@ -37,7 +37,7 @@ This is a standard issue transaction with an extra restrictions:
 - *reissuable* should be **false**
 
 You can broadcast transactions to Waves blockchain via node REST API using 
-**/transactions/broadcast** endpoint. You can read more about node api and play around with it using public Waves node [mainnet](https://nodes.wavesnodes.com) or [testnet](https://testnodes.wavesnodes.com) pools.
+**/transactions/broadcast** endpoint. You can read more about node api and play around with it using public Waves node [mainnet](https://nodes.wavesnodes.com) or [testnet](https://nodes-testnet.wavesnodes.com) pools.
 
 ### 2. Data transaction
 The second transaction is **Data transaction**. It describes the particular in-game item and holds all the metadata that particular game will use. This data transaction must be sourced from the same account.
